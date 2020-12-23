@@ -25,7 +25,6 @@ public class TagResource {
     @RequestMapping(value="/{id}", method= RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable Integer id){
         Tag obj = service.find(id);
-
         return ResponseEntity.ok().body(obj);
     }
 }

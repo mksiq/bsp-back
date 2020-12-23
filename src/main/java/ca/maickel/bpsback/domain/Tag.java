@@ -1,5 +1,7 @@
 package ca.maickel.bpsback.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class Tag implements Serializable {
     private Integer id;
     private String tag;
 
+    @JsonManagedReference
     @ManyToMany(mappedBy="tags")
     private List<Photo> photos = new ArrayList<>();
 

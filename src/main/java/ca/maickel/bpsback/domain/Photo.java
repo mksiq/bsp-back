@@ -1,5 +1,8 @@
 package ca.maickel.bpsback.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -20,7 +23,8 @@ public class Photo implements Serializable {
     private String title;
     private Integer downloads;
 
-    @ManyToMany
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "PHOTO_TAG",
             joinColumns = @JoinColumn(name = "photo_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
@@ -104,6 +108,9 @@ public class Photo implements Serializable {
     }
 
     public List<Tag> getTags() {
+        for (int i = 0; i < tags.size(); ++i) {
+            tags.get(i).setPhotos(null);
+        }
         return tags;
     }
 

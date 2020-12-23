@@ -1,6 +1,10 @@
 package ca.maickel.bpsback.resources;
 
 import ca.maickel.bpsback.domain.Tag;
+import ca.maickel.bpsback.services.TagService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,15 +16,16 @@ import java.util.List;
 @RequestMapping(value="/tags")
 public class TagResource {
 
-    @RequestMapping(method= RequestMethod.GET)
-    public List<Tag> list(){
-        Tag tag1 = new Tag(1, "banana");
-        Tag tag2 = new Tag(2, "fruit");
+    private final TagService service;
 
-        List<Tag> list = new ArrayList<Tag>();
-        list.add(tag1);
-        list.add(tag2);
+    public TagResource(TagService service) {
+        this.service = service;
+    }
 
-        return list;
+    @RequestMapping(value="/{id}", method= RequestMethod.GET)
+    public ResponseEntity<?> find(@PathVariable Integer id){
+        Tag obj = service.find(id);
+
+        return ResponseEntity.ok().body(obj);
     }
 }

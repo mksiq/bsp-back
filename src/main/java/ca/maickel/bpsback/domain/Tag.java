@@ -1,10 +1,10 @@
 package ca.maickel.bpsback.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -15,6 +15,9 @@ public class Tag implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String tag;
+
+    @ManyToMany(mappedBy="tags")
+    private List<Photo> photos = new ArrayList<>();
 
     public Tag() {
     }
@@ -38,6 +41,14 @@ public class Tag implements Serializable {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public List<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
     }
 
     @Override

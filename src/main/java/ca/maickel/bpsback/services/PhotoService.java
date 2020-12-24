@@ -4,6 +4,7 @@ import ca.maickel.bpsback.domain.Photo;
 import ca.maickel.bpsback.repositories.PhotoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,5 +19,9 @@ public class PhotoService {
     public Photo find(Integer id){
         Optional<Photo> obj = repo.findById(id);
         return obj.orElse(null);
+    }
+
+    public List<Photo> findAll(){
+       return repo.findAll();
     }
 }

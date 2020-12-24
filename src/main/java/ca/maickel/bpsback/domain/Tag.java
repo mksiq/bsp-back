@@ -18,7 +18,6 @@ public class Tag implements Serializable {
     private Integer id;
     private String tag;
 
-    @JsonManagedReference
     @ManyToMany(mappedBy="tags")
     private List<Photo> photos = new ArrayList<>();
 

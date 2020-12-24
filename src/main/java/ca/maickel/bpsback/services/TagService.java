@@ -6,6 +6,7 @@ import ca.maickel.bpsback.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,5 +22,9 @@ public class TagService {
         Optional<Tag> obj = repo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
                 "Object not Found: " + id + ", Type: " + Tag.class.getName()));
+    }
+
+    public List<Tag> findAll(){
+        return repo.findAll();
     }
 }

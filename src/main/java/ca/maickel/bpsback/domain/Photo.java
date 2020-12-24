@@ -34,9 +34,13 @@ public class Photo implements Serializable {
     @OneToMany(mappedBy = "photo")
     private List<Transaction> transactions = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Photo(){}
 
-    public Photo(Integer id, String fileName, Integer width, Integer height, Double price, LocalDate date, String title, Integer downloads) {
+    public Photo(Integer id, String fileName, Integer width, Integer height, Double price, LocalDate date, String title, Integer downloads, User user) {
         this.id = id;
         this.fileName = fileName;
         this.width = width;
@@ -45,6 +49,15 @@ public class Photo implements Serializable {
         this.date = date;
         this.title = title;
         this.downloads = downloads;
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getId() {

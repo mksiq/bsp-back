@@ -22,6 +22,11 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "seller")
     private List<Transaction> soldTransactions = new ArrayList<>();
 
+    @OneToMany
+    @JoinColumn(name="user")
+    private List<Photo> photos = new ArrayList<>();
+
+
     public User(){};
 
     public User(Integer id, String userName, String email, String password, LocalDate signUpDate) {
@@ -42,6 +47,14 @@ public class User implements Serializable {
 
     public String getUserName() {
         return userName;
+    }
+
+    public List<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
     }
 
     public void setUserName(String userName) {

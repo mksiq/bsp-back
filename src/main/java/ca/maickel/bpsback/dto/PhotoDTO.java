@@ -1,6 +1,7 @@
 package ca.maickel.bpsback.dto;
 
 import ca.maickel.bpsback.domain.Photo;
+import ca.maickel.bpsback.domain.User;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,11 +20,12 @@ public class PhotoDTO implements Serializable {
     private LocalDate date;
     private String title;
     private Integer downloads;
+    private UserDTO user;
 
     public PhotoDTO() {
     }
 
-    public PhotoDTO(Integer id, String fileName, Integer width, Integer height, Double price, LocalDate date, String title, Integer downloads) {
+    public PhotoDTO(Integer id, String fileName, Integer width, Integer height, Double price, LocalDate date, String title, Integer downloads, User user) {
         this.id = id;
         this.fileName = fileName;
         this.width = width;
@@ -32,6 +34,7 @@ public class PhotoDTO implements Serializable {
         this.date = date;
         this.title = title;
         this.downloads = downloads;
+        this.user = new UserDTO(user);
     }
 
     public PhotoDTO(Photo photo) {
@@ -43,6 +46,7 @@ public class PhotoDTO implements Serializable {
         this.date = photo.getDate();
         this.title = photo.getTitle();
         this.downloads = photo.getDownloads();
+        this.user = new UserDTO(photo.getUser());
     }
 
     public Integer getId() {
@@ -55,6 +59,14 @@ public class PhotoDTO implements Serializable {
 
     public String getFileName() {
         return fileName;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     public void setFileName(String fileName) {

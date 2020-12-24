@@ -2,9 +2,12 @@ package ca.maickel.bpsback;
 
 import ca.maickel.bpsback.domain.Photo;
 import ca.maickel.bpsback.domain.Tag;
+import ca.maickel.bpsback.domain.Transaction;
+import ca.maickel.bpsback.domain.User;
 import ca.maickel.bpsback.repositories.PhotoRepository;
 import ca.maickel.bpsback.repositories.TagRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import ca.maickel.bpsback.repositories.TransactionRepository;
+import ca.maickel.bpsback.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,14 +22,20 @@ public class BpsBackApplication implements CommandLineRunner {
 
 	private final PhotoRepository photoRepository;
 
-	public BpsBackApplication(TagRepository tagRepository, PhotoRepository photoRepository) {
+	private final UserRepository userRepository;
+
+	private final TransactionRepository transactionRepository;
+
+	public BpsBackApplication(TagRepository tagRepository, PhotoRepository photoRepository,
+							  UserRepository userRepository, TransactionRepository transactionRepository) {
 		this.tagRepository = tagRepository;
 		this.photoRepository = photoRepository;
+		this.userRepository = userRepository;
+		this.transactionRepository = transactionRepository;
 	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(BpsBackApplication.class, args);
-
 	}
 
 	@Override
@@ -36,13 +45,23 @@ public class BpsBackApplication implements CommandLineRunner {
 
 //		fileName, Integer width, Integer height, Double price, LocalDate date, String title, Integer downloads)
 		Photo p1 = new Photo(null, "banana.jpg", 800, 600, 5.99, LocalDate.now(), "Lonely Banana", 1);
+// public User(Integer id, String userName, String email, String password, LocalDate signUpDate) {
+		User u1 = new User(null, "msiqueira", "mcksiq@gmail.com", "", LocalDate.now());
+		User u2 = new User(null, "someone", "mcksiq@gmail.com", "", LocalDate.now());
+// public Transaction(Integer id, LocalDate date, Double listPrice, User buyer, User seller, Photo photo) {
+		Transaction tr1 = new Transaction(null, LocalDate.now(), p1.getPrice(), u2, u1, p1);
 
+		u2.getBoughtTransactions().addAll(Arrays.asList(tr1));
+		u1.getSoldTransactions().addAll(Arrays.asList(tr1));
 		t1.getPhotos().addAll(Arrays.asList(p1));
 		t2.getPhotos().addAll(Arrays.asList(p1));
+
 
 		p1.getTags().addAll(Arrays.asList(t1,t2));
 		tagRepository.saveAll(Arrays.asList(t1,t2));
 		photoRepository.saveAll(Arrays.asList(p1));
+		userRepository.saveAll(Arrays.asList(u1,u2));
+		transactionRepository.saveAll(Arrays.asList(tr1));
 
 	}
 }

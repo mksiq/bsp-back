@@ -1,5 +1,6 @@
 package ca.maickel.bpsback.domain;
 
+import ca.maickel.bpsback.dto.NewTransactionDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -44,6 +45,15 @@ public class Transaction implements Serializable {
         this.date = date;
         this.listPrice = listPrice;
         this.photo = photo;
+    }
+
+    public Transaction(NewTransactionDTO objDTO) {
+        this.id = objDTO.getId();
+        this.date = LocalDate.now();
+        this.listPrice = objDTO.getPhoto().getPrice();
+        this.buyer = objDTO.getBuyer();
+        this.seller = objDTO.getPhoto().getUser();
+        this.photo = objDTO.getPhoto();
     }
 
     public Integer getId() {

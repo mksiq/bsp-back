@@ -2,6 +2,7 @@ package ca.maickel.bpsback.services;
 
 import ca.maickel.bpsback.domain.Transaction;
 import ca.maickel.bpsback.domain.User;
+import ca.maickel.bpsback.dto.NewTransactionDTO;
 import ca.maickel.bpsback.repositories.TransactionRepository;
 import ca.maickel.bpsback.services.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,15 @@ public class TransactionService {
 
     public List<Transaction> findAllBySeller(User seller){
         return repo.findAllBySeller(seller);
+    }
+
+    public Transaction fromDTO(NewTransactionDTO objDTO) {
+        return new Transaction(objDTO);
+    }
+
+    public Transaction insert(Transaction obj){
+        obj.setId(null);
+        obj = repo.save(obj);
+        return obj;
     }
 }

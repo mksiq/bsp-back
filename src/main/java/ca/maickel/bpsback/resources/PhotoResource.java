@@ -43,15 +43,11 @@ public class PhotoResource {
 
   @RequestMapping(method = RequestMethod.POST)
   public ResponseEntity<Void> insert(@RequestBody NewPhotoDTO objDTO) {
-    System.out.println("** USER ID**");
-    System.out.println(objDTO.getUser().getId());
     Photo obj = service.fromDTO(objDTO);
     obj.setId(null);
     obj.setDate(LocalDate.now());
     obj.setTags(tagService.insertNTags(obj.getTags()));
     obj = service.insert(obj);
-    System.out.println("** USER ID After insertion**");
-    System.out.println(obj.getUser().getId());
     URI uri =
         ServletUriComponentsBuilder.fromCurrentRequestUri()
             .path("/{id}")

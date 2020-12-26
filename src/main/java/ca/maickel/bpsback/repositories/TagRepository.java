@@ -7,6 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Integer> {
-    @Transactional
-    Tag findByTagIgnoreCase(String tag);
+  @Transactional
+  Tag findByTagIgnoreCase(String tag);
 }

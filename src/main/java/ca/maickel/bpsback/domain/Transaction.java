@@ -9,113 +9,117 @@ import java.time.LocalDate;
 
 @Entity
 public class Transaction implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private LocalDate date;
-    private Double listPrice;
+  private static final long serialVersionUID = 1L;
 
-    @ManyToOne
-    @JoinColumn(name="buyer_id")
-    private User buyer;
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="seller_id")
-    private User seller;
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="photo_id")
-    private Photo photo;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
-    public Transaction() {
-    }
+  private LocalDate date;
+  private Double listPrice;
 
-    public Transaction(Integer id, LocalDate date, Double listPrice, User buyer, User seller, Photo photo) {
-        this.id = id;
-        this.date = date;
-        this.listPrice = listPrice;
-        this.buyer = buyer;
-        this.seller = seller;
-        this.photo = photo;
-    }
+  @ManyToOne
+  @JoinColumn(name = "buyer_id")
+  private User buyer;
 
-    public Transaction(Integer id, LocalDate date, Double listPrice, Photo photo) {
-        this.id = id;
-        this.date = date;
-        this.listPrice = listPrice;
-        this.photo = photo;
-    }
+  @JsonIgnore
+  @ManyToOne
+  @JoinColumn(name = "seller_id")
+  private User seller;
 
-    public Transaction(NewTransactionDTO objDTO) {
-        this.id = objDTO.getId();
-        this.date = LocalDate.now();
-        this.listPrice = objDTO.getPhoto().getPrice();
-        this.buyer = objDTO.getBuyer();
-        this.seller = objDTO.getPhoto().getUser();
-        this.photo = objDTO.getPhoto();
-    }
+  @JsonIgnore
+  @ManyToOne
+  @JoinColumn(name = "photo_id")
+  private Photo photo;
 
-    public Integer getId() {
-        return id;
-    }
+  public Transaction() {}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+  public Transaction(
+      Integer id, LocalDate date, Double listPrice, User buyer, User seller, Photo photo) {
+    this.id = id;
+    this.date = date;
+    this.listPrice = listPrice;
+    this.buyer = buyer;
+    this.seller = seller;
+    this.photo = photo;
+  }
 
-    public LocalDate getDate() {
-        return date;
-    }
+  public Transaction(Integer id, LocalDate date, Double listPrice, Photo photo) {
+    this.id = id;
+    this.date = date;
+    this.listPrice = listPrice;
+    this.photo = photo;
+  }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+  public Transaction(NewTransactionDTO objDTO) {
+    this.id = objDTO.getId();
+    this.date = LocalDate.now();
+    this.listPrice = objDTO.getPhoto().getPrice();
+    this.buyer = objDTO.getBuyer();
+    this.seller = objDTO.getPhoto().getUser();
+    this.photo = objDTO.getPhoto();
+  }
 
-    public Double getListPrice() {
-        return listPrice;
-    }
+  public Integer getId() {
+    return id;
+  }
 
-    public void setListPrice(Double listPrice) {
-        this.listPrice = listPrice;
-    }
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
-    public User getBuyer() {
-        return buyer;
-    }
+  public LocalDate getDate() {
+    return date;
+  }
 
-    public void setBuyer(User buyer) {
-        this.buyer = buyer;
-    }
+  public void setDate(LocalDate date) {
+    this.date = date;
+  }
 
-    public User getSeller() {
-        return seller;
-    }
+  public Double getListPrice() {
+    return listPrice;
+  }
 
-    public void setSeller(User seller) {
-        this.seller = seller;
-    }
+  public void setListPrice(Double listPrice) {
+    this.listPrice = listPrice;
+  }
 
-    public Photo getPhoto() {
-        return photo;
-    }
+  public User getBuyer() {
+    return buyer;
+  }
 
-    public void setPhoto(Photo photo) {
-        this.photo = photo;
-    }
+  public void setBuyer(User buyer) {
+    this.buyer = buyer;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  public User getSeller() {
+    return seller;
+  }
 
-        Transaction that = (Transaction) o;
+  public void setSeller(User seller) {
+    this.seller = seller;
+  }
 
-        return id.equals(that.id);
-    }
+  public Photo getPhoto() {
+    return photo;
+  }
 
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
+  public void setPhoto(Photo photo) {
+    this.photo = photo;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Transaction that = (Transaction) o;
+
+    return id.equals(that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode();
+  }
 }

@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface PhotoRepository extends JpaRepository<Photo, Integer> {
-    @Transactional
-    List<Photo> findAllByUser(User user);
+  @Transactional
+  List<Photo> findAllByUser(User user);
 }

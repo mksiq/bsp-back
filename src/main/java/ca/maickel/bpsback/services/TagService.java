@@ -6,7 +6,6 @@ import ca.maickel.bpsback.repositories.TagRepository;
 import ca.maickel.bpsback.services.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLDataException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -53,43 +52,19 @@ public class TagService {
   }
 
   public Set<Tag> insertNTags(Set<Tag> tags) {
-    System.out.println("Before inserting");
-    tags.forEach(tag -> System.out.println(tag));
-
-    tags = tags.stream()
-        .map(
-            tag -> {
-              Tag foundTag = findByTag(tag.getTag());
-              if(foundTag != null){
-                System.out.println("**ALREADY EXISTS**");
-                System.out.println("**ALREADY EXISTS**");
-                System.out.println(foundTag);
-                tag = foundTag;
-                System.out.println("**ASSIGNED**");
-              } else {
-                System.out.println("**DO NOT EXISTS**");
-                System.out.println("**DO NOT EXISTS**");
-                tag = insert(tag);
-              }
-              System.out.println(tag);
-
-//              try {
-//                System.out.println("**INSIDE TRY**");
-//
-//                tag = insert(tag);
-//              } catch (Exception e) {
-//                System.out.println("**INSIDE CATCH**");
-//
-//                System.out.println(e.getClass());
-//                tag = findByTag(tag.getTag());
-//              }
-              return tag;
-            }).collect(Collectors.toSet());
-
-
-    System.out.println("After inserting");
-
-    tags.forEach(tag -> System.out.println(tag));
+    tags =
+        tags.stream()
+            .map(
+                tag -> {
+                  Tag foundTag = findByTag(tag.getTag());
+                  if (foundTag != null) {
+                    tag = foundTag;
+                  } else {
+                    tag = insert(tag);
+                  }
+                  return tag;
+                })
+            .collect(Collectors.toSet());
     return tags;
   }
 }

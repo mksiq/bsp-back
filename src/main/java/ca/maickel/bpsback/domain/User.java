@@ -10,119 +10,122 @@ import java.util.List;
 
 @Entity
 public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String userName;
-    private String email;
-    private String password;
-    private LocalDate signUpDate;
+  private static final long serialVersionUID = 1L;
 
-    @OneToMany(mappedBy = "buyer")
-    private List<Transaction> boughtTransactions = new ArrayList<>();
-    @OneToMany(mappedBy = "seller")
-    private List<Transaction> soldTransactions = new ArrayList<>();
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
-    @OneToMany
-    @JoinColumn(name="user")
-    private List<Photo> photos = new ArrayList<>();
+  private String userName;
+  private String email;
+  private String password;
+  private LocalDate signUpDate;
 
+  @OneToMany(mappedBy = "buyer")
+  private List<Transaction> boughtTransactions = new ArrayList<>();
 
-    public User(){};
+  @OneToMany(mappedBy = "seller")
+  private List<Transaction> soldTransactions = new ArrayList<>();
 
-    public User(Integer id, String userName, String email, String password, LocalDate signUpDate) {
-        this.id = id;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.signUpDate = signUpDate;
-    }
+  @OneToMany
+  @JoinColumn(name = "user")
+  private List<Photo> photos = new ArrayList<>();
 
-    public User(UserDTO user) {
-        this.id = user.getId();
-        this.userName = user.getUserName();
-        this.email = user.getEmail();
-        this.password = user.getPassword();
-        this.signUpDate = user.getSignUpDate();
-    }
+  public User() {}
+  ;
 
-    public Integer getId() {
-        return id;
-    }
+  public User(Integer id, String userName, String email, String password, LocalDate signUpDate) {
+    this.id = id;
+    this.userName = userName;
+    this.email = email;
+    this.password = password;
+    this.signUpDate = signUpDate;
+  }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+  public User(UserDTO user) {
+    this.id = user.getId();
+    this.userName = user.getUserName();
+    this.email = user.getEmail();
+    this.password = user.getPassword();
+    this.signUpDate = user.getSignUpDate();
+  }
 
-    public String getUserName() {
-        return userName;
-    }
+  public Integer getId() {
+    return id;
+  }
 
-    public List<Photo> getPhotos() {
-        return photos;
-    }
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
-    public void setPhotos(List<Photo> photos) {
-        this.photos = photos;
-    }
+  public String getUserName() {
+    return userName;
+  }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+  public List<Photo> getPhotos() {
+    return photos;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public void setPhotos(List<Photo> photos) {
+    this.photos = photos;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-    public LocalDate getSignUpDate() {
-        return signUpDate;
-    }
+  public String getPassword() {
+    return password;
+  }
 
-    public void setSignUpDate(LocalDate signUpDate) {
-        this.signUpDate = signUpDate;
-    }
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-    public List<Transaction> getBoughtTransactions() {
-        return boughtTransactions;
-    }
+  public LocalDate getSignUpDate() {
+    return signUpDate;
+  }
 
-    public void setBoughtTransactions(List<Transaction> boughtTransactions) {
-        this.boughtTransactions = boughtTransactions;
-    }
+  public void setSignUpDate(LocalDate signUpDate) {
+    this.signUpDate = signUpDate;
+  }
 
-    public List<Transaction> getSoldTransactions() {
-        return soldTransactions;
-    }
+  public List<Transaction> getBoughtTransactions() {
+    return boughtTransactions;
+  }
 
-    public void setSoldTransactions(List<Transaction> sellerTransactions) {
-        this.soldTransactions = sellerTransactions;
-    }
+  public void setBoughtTransactions(List<Transaction> boughtTransactions) {
+    this.boughtTransactions = boughtTransactions;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  public List<Transaction> getSoldTransactions() {
+    return soldTransactions;
+  }
 
-        User user = (User) o;
+  public void setSoldTransactions(List<Transaction> sellerTransactions) {
+    this.soldTransactions = sellerTransactions;
+  }
 
-        return id.equals(user.id);
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
+    User user = (User) o;
+
+    return id.equals(user.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode();
+  }
 }

@@ -30,12 +30,10 @@ public class Photo implements Serializable {
   private String title;
   private Integer downloads;
 
-  @ManyToMany(fetch = FetchType.LAZY,
-          cascade = {
-
-                  CascadeType.MERGE
-          })
- // )
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE})
+  // )
   @JoinTable(
       name = "PHOTO_TAG",
       joinColumns = @JoinColumn(name = "photo_id"),
@@ -182,7 +180,7 @@ public class Photo implements Serializable {
 
   public Set<Tag> getTags() {
     for (int i = 0; i < tags.size(); ++i) {
-//      tags.get(i).setPhotos(null);
+      //      tags.get(i).setPhotos(null);
     }
     return tags;
   }
@@ -205,18 +203,31 @@ public class Photo implements Serializable {
 
   @Override
   public String toString() {
-    return "Photo{" +
-            "id=" + id +
-            ", fileName='" + fileName + '\'' +
-            ", width=" + width +
-            ", height=" + height +
-            ", price=" + price +
-            ", date=" + date +
-            ", title='" + title + '\'' +
-            ", downloads=" + downloads +
-            ", tags=" + tags +
-            ", transactions=" + transactions +
-            ", user=" + user +
-            '}';
+    return "Photo{"
+        + "id="
+        + id
+        + ", fileName='"
+        + fileName
+        + '\''
+        + ", width="
+        + width
+        + ", height="
+        + height
+        + ", price="
+        + price
+        + ", date="
+        + date
+        + ", title='"
+        + title
+        + '\''
+        + ", downloads="
+        + downloads
+        + ", tags="
+        + tags
+        + ", transactions="
+        + transactions
+        + ", user="
+        + user
+        + '}';
   }
 }

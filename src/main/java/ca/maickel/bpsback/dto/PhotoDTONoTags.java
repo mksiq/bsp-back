@@ -5,8 +5,6 @@ import ca.maickel.bpsback.domain.User;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PhotoDTONoTags implements Serializable {
   private static final long serialVersionUID = 1L;

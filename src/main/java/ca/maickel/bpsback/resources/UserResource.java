@@ -57,9 +57,7 @@ public class UserResource {
         User obj = service.fromDTO(objDTO);
         obj.setId(null);
         obj.setSignUpDate(LocalDate.now());
-
         obj = service.insert(obj);
-
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }

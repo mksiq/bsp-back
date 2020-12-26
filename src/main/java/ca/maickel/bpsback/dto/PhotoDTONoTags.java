@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PhotoDTO implements Serializable {
+public class PhotoDTONoTags implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private Integer id;
@@ -20,11 +20,10 @@ public class PhotoDTO implements Serializable {
   private String title;
   private Integer downloads;
   private UserDTO user;
-  private Set<TagDTONoPhotos> tags;
 
-  public PhotoDTO() {}
+  public PhotoDTONoTags() {}
 
-  public PhotoDTO(
+  public PhotoDTONoTags(
       Integer id,
       String fileName,
       Integer width,
@@ -45,7 +44,7 @@ public class PhotoDTO implements Serializable {
     this.user = new UserDTO(user);
   }
 
-  public PhotoDTO(Photo photo) {
+  public PhotoDTONoTags(Photo photo) {
     this.id = photo.getId();
     this.fileName = photo.getFileName();
     this.width = photo.getWidth();
@@ -55,15 +54,6 @@ public class PhotoDTO implements Serializable {
     this.title = photo.getTitle();
     this.downloads = photo.getDownloads();
     this.user = new UserDTO(photo.getUser());
-    this.tags = photo.getTags().stream().map(tag -> new TagDTONoPhotos(tag)).collect(Collectors.toSet());
-  }
-
-  public Set<TagDTONoPhotos> getTags() {
-    return tags;
-  }
-
-  public void setTags(Set<TagDTONoPhotos> tags) {
-    this.tags = tags;
   }
 
   public Integer getId() {

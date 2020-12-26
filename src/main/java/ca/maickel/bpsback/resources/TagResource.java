@@ -4,12 +4,11 @@ import ca.maickel.bpsback.domain.Tag;
 import ca.maickel.bpsback.dto.TagDTO;
 import ca.maickel.bpsback.services.TagService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +25,25 @@ public class TagResource {
     @RequestMapping(value="/{id}", method= RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable Integer id){
         Tag obj = service.find(id);
+//        if(obj != null){
+//            obj.getPhotos().stream().forEach( photo -> {
+//
+//                photo.setUser(null);
+//                photo.setTransactions(null);
+//            });
+//        }
+        TagDTO objDTO = new TagDTO(obj);
+        return ResponseEntity.ok().body(objDTO);
+    }
+    @RequestMapping(value="/tag={tag}", method= RequestMethod.GET)
+    public ResponseEntity<?> find(@PathVariable String tag){
+        Tag obj = service.findByTag(tag);
+        if(obj != null){
+            obj.getPhotos().stream().forEach( photo -> {
+                photo.setUser(null);
+                photo.setTransactions(null);
+            });
+        }
         return ResponseEntity.ok().body(obj);
     }
 
@@ -34,5 +52,14 @@ public class TagResource {
         List<Tag> list = service.findAll();
         List<TagDTO> listDTO = list.stream().map(obj -> new TagDTO(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDTO);
+    }
+
+    @RequestMapping(method=RequestMethod.POST)
+    public ResponseEntity<Void> insert(@RequestBody TagDTO objDTO){
+        Tag obj = service.fromDTO(objDTO);
+        obj.setId(null);
+        obj = service.insert(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 }

@@ -40,7 +40,6 @@ public class UserDTO implements Serializable {
         this.email = email;
         this.password = password;
         this.signUpDate = signUpDate;
-
     }
 
     public Integer getId() {

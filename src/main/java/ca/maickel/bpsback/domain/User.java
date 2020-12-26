@@ -1,5 +1,7 @@
 package ca.maickel.bpsback.domain;
 
+import ca.maickel.bpsback.dto.UserDTO;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -35,6 +37,14 @@ public class User implements Serializable {
         this.email = email;
         this.password = password;
         this.signUpDate = signUpDate;
+    }
+
+    public User(UserDTO user) {
+        this.id = user.getId();
+        this.userName = user.getUserName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.signUpDate = user.getSignUpDate();
     }
 
     public Integer getId() {

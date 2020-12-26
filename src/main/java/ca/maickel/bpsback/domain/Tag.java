@@ -1,25 +1,38 @@
 package ca.maickel.bpsback.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import ca.maickel.bpsback.dto.TagDTO;
+import org.hibernate.annotations.NaturalId;
+
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
+@Table(name = "tags")
 public class Tag implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @NotNull
+    @Size(max = 100)
+    @NaturalId
     private String tag;
 
-    @ManyToMany(mappedBy="tags")
-    private List<Photo> photos = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "tags")
+    private Set<Photo> photos = new HashSet<>();
 
     public Tag() {
     }
@@ -27,6 +40,11 @@ public class Tag implements Serializable {
     public Tag(Integer id, String tag) {
         this.id = id;
         this.tag = tag;
+    }
+
+    public Tag(TagDTO objDTO) {
+        this.id = objDTO.getId();
+        this.tag = objDTO.getTag();
     }
 
     public Integer getId() {
@@ -45,29 +63,31 @@ public class Tag implements Serializable {
         this.tag = tag;
     }
 
-    public List<Photo> getPhotos() {
+    public Set<Photo> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(List<Photo> photos) {
+    public void setPhotos(Set<Photo> photos) {
         this.photos = photos;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Tag tag1 = (Tag) o;
-
-        if (!Objects.equals(id, tag1.id)) return false;
-        return Objects.equals(tag, tag1.tag);
+        if (!(o instanceof Tag)) return false;
+        return id != null && id.equals(((Tag) o).getId());
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (tag != null ? tag.hashCode() : 0);
-        return result;
+        return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", tag='" + tag + '\'' +
+                '}';
     }
 }

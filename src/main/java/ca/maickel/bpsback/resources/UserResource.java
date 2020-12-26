@@ -44,7 +44,10 @@ public class UserResource {
         obj.setPhotos(ownedPhotos);
 
         List<Transaction> boughtTransactionsList = transactionService.findAllByBuyer(obj);
-        List<Transaction> soldTransactionsList = transactionService.findAllByBuyer(obj);
+        List<Transaction> soldTransactionsList = transactionService.findAllBySeller(obj);
+
+        obj.setBoughtTransactions(boughtTransactionsList);
+        obj.setSoldTransactions(soldTransactionsList);
 
         for(int i = 0 ; i < obj.getBoughtTransactions().size(); ++i){
             obj.getBoughtTransactions().get(i).setBuyer(null);

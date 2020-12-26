@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,7 @@ public class PhotoResource {
     System.out.println(objDTO.getUser().getId());
     Photo obj = service.fromDTO(objDTO);
     obj.setId(null);
+    obj.setDate(LocalDate.now());
     obj.setTags(tagService.insertNTags(obj.getTags()));
     obj = service.insert(obj);
     System.out.println("** USER ID After insertion**");

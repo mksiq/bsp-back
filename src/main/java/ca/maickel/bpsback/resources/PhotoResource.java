@@ -42,22 +42,14 @@ public class PhotoResource {
 
   @RequestMapping(method = RequestMethod.POST)
   public ResponseEntity<Void> insert(@RequestBody NewPhotoDTO objDTO) {
-    System.out.println("Inside insert resource for NewPhotoDTO");
-  //  objDTO.getTags().forEach(tag -> System.out.println(tag));
-
-
+    System.out.println("** USER ID**");
+    System.out.println(objDTO.getUser().getId());
     Photo obj = service.fromDTO(objDTO);
-   // System.out.println("Inside insert resource for objDTO");
-   // obj.getTags().forEach(tag -> System.out.println(tag));
     obj.setId(null);
-
-
-
     obj.setTags(tagService.insertNTags(obj.getTags()));
     obj = service.insert(obj);
-
-
- //   System.out.println(obj);
+    System.out.println("** USER ID After insertion**");
+    System.out.println(obj.getUser().getId());
     URI uri =
         ServletUriComponentsBuilder.fromCurrentRequestUri()
             .path("/{id}")

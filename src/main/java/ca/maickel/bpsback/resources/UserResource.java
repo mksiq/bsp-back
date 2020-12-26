@@ -1,12 +1,12 @@
 package ca.maickel.bpsback.resources;
 
+import ca.maickel.bpsback.domain.Photo;
 import ca.maickel.bpsback.domain.Transaction;
 import ca.maickel.bpsback.domain.User;
-import ca.maickel.bpsback.dto.TransactionDTO;
 import ca.maickel.bpsback.dto.UserDTO;
+import ca.maickel.bpsback.services.PhotoService;
 import ca.maickel.bpsback.services.TransactionService;
 import ca.maickel.bpsback.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -21,16 +21,27 @@ import java.util.stream.Collectors;
 public class UserResource {
 
     private final UserService service;
+    private final PhotoService photoService;
     private final TransactionService transactionService;
 
-    public UserResource(UserService service, TransactionService transactionService) {
+    public UserResource(UserService service, PhotoService photoService, TransactionService transactionService) {
         this.service = service;
+        this.photoService = photoService;
         this.transactionService = transactionService;
     }
 
     @RequestMapping(value="/{id}", method= RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable Integer id){
         User obj = service.find(id);
+
+        List<Photo> ownedPhotos = photoService.findAllByUser(obj);
+
+//        ownedPhotos = ownedPhotos.stream().map( photo -> {
+//            photo.setTags(null);
+//            return photo;
+//        }).collect(Collectors.toList());
+
+        obj.setPhotos(ownedPhotos);
 
         List<Transaction> boughtTransactionsList = transactionService.findAllByBuyer(obj);
         List<Transaction> soldTransactionsList = transactionService.findAllByBuyer(obj);

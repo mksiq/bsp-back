@@ -47,7 +47,7 @@ public class Photo implements Serializable {
   private List<Transaction> transactions = new ArrayList<>();
 
   @ManyToOne
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "user")
   private User user;
 
   public Photo() {}
@@ -91,8 +91,11 @@ public class Photo implements Serializable {
     this.height = objDTO.getHeight();
     this.price = objDTO.getPrice();
     this.title = objDTO.getTitle();
+    this.date = objDTO.getDate();
     this.downloads = objDTO.getDownloads();
     this.user = new User(objDTO.getUser());
+    System.out.println("**** USER ID  ****");
+    System.out.println(user.getId());
     this.tags =
         objDTO.getTags().stream().map(tagDTO -> new Tag(tagDTO)).collect(Collectors.toSet());
   }
@@ -198,5 +201,22 @@ public class Photo implements Serializable {
   @Override
   public int hashCode() {
     return getClass().hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return "Photo{" +
+            "id=" + id +
+            ", fileName='" + fileName + '\'' +
+            ", width=" + width +
+            ", height=" + height +
+            ", price=" + price +
+            ", date=" + date +
+            ", title='" + title + '\'' +
+            ", downloads=" + downloads +
+            ", tags=" + tags +
+            ", transactions=" + transactions +
+            ", user=" + user +
+            '}';
   }
 }

@@ -41,9 +41,6 @@ public class NewPhotoDTO implements Serializable {
     }
 
     public NewPhotoDTO(Photo photo) {
-        System.out.println("Inside Photo");
-        photo.getTags().forEach(tag -> System.out.println(tag));
-
         this.id = photo.getId();
         this.fileName = photo.getFileName();
         this.width = photo.getWidth();

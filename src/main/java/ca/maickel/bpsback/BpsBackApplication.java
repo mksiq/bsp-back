@@ -63,8 +63,8 @@ public class BpsBackApplication implements CommandLineRunner {
 		p1.getTags().addAll(Arrays.asList(t1,t2));
 //
 		userRepository.saveAll(Arrays.asList(u1,u2));
-//		photoRepository.saveAll(Arrays.asList(p1));
-//		tagRepository.saveAll(Arrays.asList(t1,t2));
+		tagRepository.saveAll(Arrays.asList(t1,t2));
+		photoRepository.saveAll(Arrays.asList(p1));
 //		u1.getPhotos().addAll(Arrays.asList(p1));
 //		transactionRepository.saveAll(Arrays.asList(tr1));
 

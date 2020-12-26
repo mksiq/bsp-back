@@ -4,8 +4,8 @@ import ca.maickel.bpsback.domain.Photo;
 import ca.maickel.bpsback.domain.Tag;
 import ca.maickel.bpsback.domain.User;
 import ca.maickel.bpsback.dto.NewPhotoDTO;
-import ca.maickel.bpsback.dto.PhotoDTO;
 import ca.maickel.bpsback.repositories.PhotoRepository;
+import ca.maickel.bpsback.services.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -25,7 +25,10 @@ public class PhotoService {
 
   public Photo find(Integer id) {
     Optional<Photo> obj = repo.findById(id);
-    return obj.orElse(null);
+    return obj.orElseThrow(
+        () ->
+            new ObjectNotFoundException(
+                "Object not Found: " + id + ", Type: " + User.class.getName()));
   }
 
   public List<Photo> findAll() {
@@ -47,10 +50,6 @@ public class PhotoService {
     return cleared;
   }
 
-  public Photo fromDTO(PhotoDTO objDTO) {
-    return new Photo(objDTO);
-  }
-
   public Photo fromDTO(NewPhotoDTO objDTO) {
     return new Photo(objDTO);
   }
@@ -65,5 +64,17 @@ public class PhotoService {
     obj.setDownloads(obj.getDownloads() + 1);
     obj = repo.save(obj);
     return obj;
+  }
+
+  public Photo update(Photo obj) {
+    Photo newObj  = find(obj.getId());
+    updateData(newObj, obj);
+    return repo.save(newObj);
+  }
+
+  private void updateData(Photo newObj, Photo obj) {
+    newObj.setTitle(obj.getTitle());
+    newObj.setPrice(obj.getPrice());
+    newObj.setTags(obj.getTags());
   }
 }

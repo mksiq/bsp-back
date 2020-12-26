@@ -1,8 +1,10 @@
 package ca.maickel.bpsback.resources;
 
 import ca.maickel.bpsback.domain.Photo;
+import ca.maickel.bpsback.domain.User;
 import ca.maickel.bpsback.dto.NewPhotoDTO;
 import ca.maickel.bpsback.dto.PhotoDTO;
+import ca.maickel.bpsback.dto.UserDTO;
 import ca.maickel.bpsback.services.PhotoService;
 import ca.maickel.bpsback.services.TagService;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +55,20 @@ public class PhotoResource {
             .path("/{id}")
             .buildAndExpand(obj.getId())
             .toUri();
+    return ResponseEntity.created(uri).build();
+  }
+
+  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+  public ResponseEntity<Void> update(@RequestBody NewPhotoDTO objDTO, @PathVariable Integer id) {
+    Photo obj = new Photo(objDTO);
+    obj.setId(id);
+    obj.setTags(tagService.insertNTags(obj.getTags()));
+    obj = service.update(obj);
+    URI uri =
+            ServletUriComponentsBuilder.fromCurrentRequestUri()
+                    .path("")
+                    .buildAndExpand(obj.getId())
+                    .toUri();
     return ResponseEntity.created(uri).build();
   }
 }

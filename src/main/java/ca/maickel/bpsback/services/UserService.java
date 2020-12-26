@@ -51,4 +51,16 @@ public class UserService {
             objDTO.getSignUpDate());
     return user;
   }
+
+  public User update(User obj) {
+    User newObj = find(obj.getId());
+    updateData(newObj, obj);
+    return repo.save(newObj);
+  }
+
+  private void updateData(User newObj, User obj) {
+    newObj.setUserName(obj.getUserName());
+    newObj.setEmail(obj.getEmail());
+    newObj.setPassword(obj.getPassword());
+  }
 }

@@ -53,4 +53,10 @@ public class PhotoService {
     obj = repo.save(obj);
     return obj;
   }
+
+  public Photo increaseDownloads(Photo obj) {
+    obj.setDownloads(obj.getDownloads() + 1);
+    obj = repo.save(obj);
+    return obj;
+  }
 }

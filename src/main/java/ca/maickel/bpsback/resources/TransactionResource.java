@@ -42,6 +42,7 @@ public class TransactionResource {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> insert(@RequestBody NewTransactionDTO objDTO){
         objDTO.setPhoto(photoService.find(objDTO.getPhoto().getId()));
+        photoService.increaseDownloads(objDTO.getPhoto());
         Transaction obj = service.fromDTO(objDTO);
         obj = service.insert(obj);
         URI uri =

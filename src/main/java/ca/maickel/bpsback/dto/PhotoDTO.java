@@ -54,7 +54,12 @@ public class PhotoDTO implements Serializable {
     this.date = photo.getDate();
     this.title = photo.getTitle();
     this.downloads = photo.getDownloads();
-    this.user = new UserDTO(photo.getUser());
+    try {
+      this.user = new UserDTO(photo.getUser());
+    } catch (NullPointerException e) {
+      this.user = new UserDTO();
+      this.user.setUserName("Removed User");
+    }
     this.tags =
         photo.getTags().stream().map(tag -> new TagDTONoPhotos(tag)).collect(Collectors.toSet());
   }

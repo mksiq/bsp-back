@@ -44,8 +44,8 @@ public class Photo implements Serializable {
   @OneToMany(mappedBy = "photo")
   private List<Transaction> transactions = new ArrayList<>();
 
-  @ManyToOne
-  @JoinColumn(name = "user")
+  @ManyToOne(optional = true, fetch = FetchType.LAZY)
+  @JoinColumn(name = "user",  columnDefinition ="integer")
   private User user;
 
   public Photo() {}

@@ -44,7 +44,7 @@ public class BpsBackApplication implements CommandLineRunner {
 		Tag t2 = new Tag(null,"Fruit");
 
 // public User(Integer id, String userName, String email, String password, LocalDate signUpDate) {
-		User u1 = new User(null, "msiqueira", "mcksiq@gmail.com", "", LocalDate.now());
+		User u1 = new User(null, "msiqueira", "bts@gmail.com", "", LocalDate.now());
 		User u2 = new User(null, "someone", "s@gmail.com", "", LocalDate.now());
 		User u3 = new User(null, "john", "j@gmail.com", "", LocalDate.now());
 //		fileName, Integer width, Integer height, Double price, LocalDate date, String title, Integer downloads)

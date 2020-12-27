@@ -1,6 +1,8 @@
 package ca.maickel.bpsback.domain;
 
 import ca.maickel.bpsback.dto.UserDTO;
+import ca.maickel.bpsback.repositories.PhotoRepository;
+import ca.maickel.bpsback.services.PhotoService;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,6 +33,13 @@ public class User implements Serializable {
   @JoinColumn(name = "user")
   private List<Photo> photos = new ArrayList<>();
 
+  @PreRemove
+  public void onPreRemove(){
+    soldTransactions.stream().forEach( transaction -> {
+      transaction.setBuyer(null);
+      transaction.setSeller(null);
+    });
+  }
   public User() {}
   ;
 

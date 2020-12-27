@@ -19,12 +19,12 @@ public class Transaction implements Serializable {
   private Double listPrice;
 
   @ManyToOne
-  @JoinColumn(name = "buyer_id")
+  @JoinColumn(name = "buyer_id", columnDefinition ="integer")
   private User buyer;
 
   @JsonIgnore
   @ManyToOne
-  @JoinColumn(name = "seller_id")
+  @JoinColumn(name = "seller_id", columnDefinition ="integer")
   private User seller;
 
   @JsonIgnore

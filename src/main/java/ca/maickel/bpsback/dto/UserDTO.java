@@ -2,6 +2,7 @@ package ca.maickel.bpsback.dto;
 
 import ca.maickel.bpsback.domain.User;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,8 +12,11 @@ public class UserDTO implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private Integer id;
+  @NotEmpty(message = "Must be filled")
   private String userName;
+  @NotEmpty(message = "Must be filled")
   private String email;
+  @NotEmpty(message = "Must be filled")
   private String password;
   private LocalDate signUpDate;
 

@@ -1,6 +1,7 @@
 package ca.maickel.bpsback.domain;
 
 import ca.maickel.bpsback.dto.UserDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,6 +21,8 @@ public class User implements Serializable {
   private String userName;
   @Column(unique = true)
   private String email;
+
+  @JsonIgnore
   private String password;
   private LocalDate signUpDate;
 

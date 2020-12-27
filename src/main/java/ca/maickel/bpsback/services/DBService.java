@@ -8,6 +8,7 @@ import ca.maickel.bpsback.repositories.PhotoRepository;
 import ca.maickel.bpsback.repositories.TagRepository;
 import ca.maickel.bpsback.repositories.TransactionRepository;
 import ca.maickel.bpsback.repositories.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,6 +16,8 @@ import java.util.Arrays;
 
 @Service
 public class DBService {
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
   private final TagRepository tagRepository;
 
   private final PhotoRepository photoRepository;
@@ -24,10 +27,11 @@ public class DBService {
   private final TransactionRepository transactionRepository;
 
   public DBService(
-      TagRepository tagRepository,
-      PhotoRepository photoRepository,
-      UserRepository userRepository,
-      TransactionRepository transactionRepository) {
+          BCryptPasswordEncoder bCryptPasswordEncoder, TagRepository tagRepository,
+          PhotoRepository photoRepository,
+          UserRepository userRepository,
+          TransactionRepository transactionRepository) {
+    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     this.tagRepository = tagRepository;
     this.photoRepository = photoRepository;
     this.userRepository = userRepository;
@@ -40,9 +44,9 @@ public class DBService {
 
     // public User(Integer id, String userName, String email, String password, LocalDate signUpDate)
     // {
-    User u1 = new User(null, "msiqueira", "bts@gmail.com", "", LocalDate.now());
-    User u2 = new User(null, "someone", "s@gmail.com", "", LocalDate.now());
-    User u3 = new User(null, "john", "j@gmail.com", "", LocalDate.now());
+    User u1 = new User(null, "msiqueira", "bts@gmail.com", bCryptPasswordEncoder.encode("a"), LocalDate.now());
+    User u2 = new User(null, "someone", "s@gmail.com",  bCryptPasswordEncoder.encode("b"), LocalDate.now());
+    User u3 = new User(null, "john", "j@gmail.com",  bCryptPasswordEncoder.encode("c"), LocalDate.now());
     //		fileName, Integer width, Integer height, Double price, LocalDate date, String title, Integer
     // downloads)
     Photo p1 =

@@ -4,6 +4,7 @@ import ca.maickel.bpsback.domain.User;
 import ca.maickel.bpsback.dto.UserDTO;
 import ca.maickel.bpsback.repositories.UserRepository;
 import ca.maickel.bpsback.services.exceptions.ObjectNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,11 +14,13 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
   private final UserRepository repo;
 
   private final PhotoService photoService;
 
-  public UserService(UserRepository repo, PhotoService photoService) {
+  public UserService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository repo, PhotoService photoService) {
+    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     this.repo = repo;
     this.photoService = photoService;
   }
@@ -47,7 +50,7 @@ public class UserService {
             null,
             objDTO.getUserName(),
             objDTO.getEmail(),
-            objDTO.getPassword(),
+            bCryptPasswordEncoder.encode(objDTO.getPassword()),
             objDTO.getSignUpDate());
     return user;
   }
@@ -61,7 +64,7 @@ public class UserService {
   private void updateData(User newObj, User obj) {
     newObj.setUserName(obj.getUserName());
     newObj.setEmail(obj.getEmail());
-    newObj.setPassword(obj.getPassword());
+    newObj.setPassword(bCryptPasswordEncoder.encode(obj.getPassword()));
   }
 
   public void delete(Integer id) {

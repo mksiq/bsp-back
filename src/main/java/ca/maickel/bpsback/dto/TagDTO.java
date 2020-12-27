@@ -2,6 +2,8 @@ package ca.maickel.bpsback.dto;
 
 import ca.maickel.bpsback.domain.Tag;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +13,8 @@ public class TagDTO implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private Integer id;
+  @NotEmpty(message = "Tag must be named")
+  @Size(min = 2, max = 20, message = "Name length invalid")
   private String tag;
   private Set<PhotoDTONoTags> photos = new HashSet<>();
 

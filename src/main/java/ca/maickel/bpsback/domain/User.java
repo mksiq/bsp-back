@@ -1,8 +1,6 @@
 package ca.maickel.bpsback.domain;
 
 import ca.maickel.bpsback.dto.UserDTO;
-import ca.maickel.bpsback.repositories.PhotoRepository;
-import ca.maickel.bpsback.services.PhotoService;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,14 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "user")
 public class User implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-
+  @Column(unique = true)
   private String userName;
+  @Column(unique = true)
   private String email;
   private String password;
   private LocalDate signUpDate;

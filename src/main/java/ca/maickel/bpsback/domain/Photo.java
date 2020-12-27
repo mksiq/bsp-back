@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "photos")
+@Table(name = "photo")
 public class Photo implements Serializable {
   private static final long serialVersionUID = 1L;
 

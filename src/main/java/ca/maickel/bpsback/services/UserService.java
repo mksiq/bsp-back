@@ -63,4 +63,8 @@ public class UserService {
     newObj.setEmail(obj.getEmail());
     newObj.setPassword(obj.getPassword());
   }
+
+  public void delete(Integer id) {
+    repo.deleteById(id);
+  }
 }

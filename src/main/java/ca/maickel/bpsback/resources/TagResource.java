@@ -2,6 +2,7 @@ package ca.maickel.bpsback.resources;
 
 import ca.maickel.bpsback.domain.Tag;
 import ca.maickel.bpsback.dto.TagDTO;
+import ca.maickel.bpsback.dto.TagDTONoPhotos;
 import ca.maickel.bpsback.services.TagService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,32 +26,21 @@ public class TagResource {
     @RequestMapping(value="/{id}", method= RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable Integer id){
         Tag obj = service.find(id);
-//        if(obj != null){
-//            obj.getPhotos().stream().forEach( photo -> {
-//
-//                photo.setUser(null);
-//                photo.setTransactions(null);
-//            });
-//        }
         TagDTO objDTO = new TagDTO(obj);
         return ResponseEntity.ok().body(objDTO);
     }
     @RequestMapping(value="/tag={tag}", method= RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable String tag){
         Tag obj = service.findByTag(tag);
-        if(obj != null){
-            obj.getPhotos().stream().forEach( photo -> {
-                photo.setUser(null);
-                photo.setTransactions(null);
-            });
-        }
-        return ResponseEntity.ok().body(obj);
+        TagDTO objDTO = new TagDTO(obj);
+
+        return ResponseEntity.ok().body(objDTO);
     }
 
     @RequestMapping(method= RequestMethod.GET)
     public ResponseEntity<?> findAll(){
         List<Tag> list = service.findAll();
-        List<TagDTO> listDTO = list.stream().map(obj -> new TagDTO(obj)).collect(Collectors.toList());
+        List<TagDTONoPhotos> listDTO = list.stream().map(obj -> new TagDTONoPhotos(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDTO);
     }
 

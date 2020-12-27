@@ -1,10 +1,17 @@
 #  Banana Photo Store
 
+Project in progress built using Java Spring. It intends to serve a photo marketplace that allows users to buy and sell pictures.
+For testing DB it is using HB2 database. 
+
+Link for front-end project repo:
+[BPS Front-end](https://github.com/mksiq/bps-front)
+
+
 
 
 ## Available end-points
 
-###/tags
+### /tags
 /tags  Returns all tags
 
 >[{"id":1,"tag":"Banana"}
@@ -18,21 +25,21 @@
 >{"id":1,"tag":"Banana","photos":[{"id":1,"fileName":"banana.jpg","width":800,"height":600,"price":5.99,"date":"2020-12-27","title":"Lonely Banana","downloads":4,"user":{"id":1,"userName":"msiqueira","email":"bps@gmail.com","password":"","signUpDate":"2020-12-27","soldList":[],"boughtList":[]}}]}
 
 
-###/photos
+### /photos
 /photos  Returns all photos
 > [{"id":1,"fileName":"banana.jpg","width":800,"height":600,"price":5.99,"date":"2020-12-27","title":"Lonely Banana","downloads":4,"user":{"id":1,"userName":"msiqueira","email":"bps@gmail.com","password":"","signUpDate":"2020-12-27","soldList":[],"boughtList":[]},"tags":[{"id":1,"tag":"Banana"},{"id":2,"tag":"Fruit"}]}]
 
 /photos/{id} Query a photo by Id, returns array of tags, and the user that uploaded that photo:
 > {"id":1,"fileName":"banana.jpg","width":800,"height":600,"price":5.99,"date":"2020-12-27","title":"Lonely Banana","downloads":4,"user":{"id":1,"userName":"msiqueira","email":"bps@gmail.com","password":"","signUpDate":"2020-12-27","soldList":[],"boughtList":[]},"tags":[{"id":2,"tag":"Fruit"},{"id":1,"tag":"Banana"}]}
 
-###/transactions
+### /transactions
 /transactions Returns all transactions
 > [{"id":1,"date":"2020-12-27","listPrice":5.99}]
 
 /transactions/{id} Query a transaction by Id.
 > [{"id":1,"date":"2020-12-27","listPrice":5.99}]
 
-###/users
+### /users
 /users Returns all users
 > [{"id":1,"userName":"msiqueira","email":"mcksiq@gmail.com","password":"mcksiq@gmail.com","signUpDate":"2020-12-27","soldList":[],"boughtList":[]},{"id":2,"userName":"someone","email":"s@gmail.com","password":"s@gmail.com","signUpDate":"2020-12-27","soldList":[],"boughtList":[]}]
 

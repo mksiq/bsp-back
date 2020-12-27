@@ -33,7 +33,6 @@ public class TagResource {
     public ResponseEntity<?> find(@PathVariable String tag){
         Tag obj = service.findByTag(tag);
         TagDTO objDTO = new TagDTO(obj);
-
         return ResponseEntity.ok().body(objDTO);
     }
 

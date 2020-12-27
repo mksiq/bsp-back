@@ -30,10 +30,10 @@ public class Photo implements Serializable {
   private String title;
   private Integer downloads;
 
+  /** Decided to not ignore as I want to everytime I fetch a photo to receive all tags associated */
   @ManyToMany(
       fetch = FetchType.LAZY,
       cascade = {CascadeType.MERGE})
-  // )
   @JoinTable(
       name = "PHOTO_TAG",
       joinColumns = @JoinColumn(name = "photo_id"),
@@ -44,8 +44,9 @@ public class Photo implements Serializable {
   @OneToMany(mappedBy = "photo")
   private List<Transaction> transactions = new ArrayList<>();
 
+  /** User who owns and published the photo This allows deleting one user and having a null FK */
   @ManyToOne(optional = true, fetch = FetchType.LAZY)
-  @JoinColumn(name = "user",  columnDefinition ="integer")
+  @JoinColumn(name = "user", columnDefinition = "integer")
   private User user;
 
   public Photo() {}

@@ -51,6 +51,7 @@ public class TagService {
     return new Tag(objDTO);
   }
 
+  /** Inserts new tags while updating id for existing ones */
   public Set<Tag> insertNTags(Set<Tag> tags) {
     tags =
         tags.stream()

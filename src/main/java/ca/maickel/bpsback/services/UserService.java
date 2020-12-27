@@ -57,7 +57,7 @@ public class UserService {
     updateData(newObj, obj);
     return repo.save(newObj);
   }
-
+  /** Allows only update for userName, email, and password. */
   private void updateData(User newObj, User obj) {
     newObj.setUserName(obj.getUserName());
     newObj.setEmail(obj.getEmail());

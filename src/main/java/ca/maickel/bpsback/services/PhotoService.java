@@ -61,6 +61,7 @@ public class PhotoService {
   }
 
   public Photo increaseDownloads(Photo obj) {
+    /** Everytime a transaction is inserted this function is called to update the this download count */
     obj.setDownloads(obj.getDownloads() + 1);
     obj = repo.save(obj);
     return obj;
@@ -71,7 +72,7 @@ public class PhotoService {
     updateData(newObj, obj);
     return repo.save(newObj);
   }
-
+  /** Allows only update of title, price, and tags */
   private void updateData(Photo newObj, Photo obj) {
     newObj.setTitle(obj.getTitle());
     newObj.setPrice(obj.getPrice());

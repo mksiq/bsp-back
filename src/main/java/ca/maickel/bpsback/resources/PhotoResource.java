@@ -48,6 +48,7 @@ public class PhotoResource {
     Photo obj = service.fromDTO(objDTO);
     obj.setId(null);
     obj.setDate(LocalDate.now());
+    // Insert new tags and attaches id to existing tags
     obj.setTags(tagService.insertNTags(obj.getTags()));
     obj = service.insert(obj);
     URI uri =
@@ -62,6 +63,7 @@ public class PhotoResource {
   public ResponseEntity<Void> update(@RequestBody NewPhotoDTO objDTO, @PathVariable Integer id) {
     Photo obj = new Photo(objDTO);
     obj.setId(id);
+    // Insert new tags and attaches id to existing tags
     obj.setTags(tagService.insertNTags(obj.getTags()));
     obj = service.update(obj);
     URI uri =

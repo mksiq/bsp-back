@@ -20,12 +20,12 @@ public class Transaction implements Serializable {
   private Double listPrice;
 
   @ManyToOne
-  @JoinColumn(name = "buyer_id", columnDefinition ="integer")
+  @JoinColumn(name = "buyer_id", columnDefinition = "integer")
   private User buyer;
 
   @JsonIgnore
   @ManyToOne
-  @JoinColumn(name = "seller_id", columnDefinition ="integer")
+  @JoinColumn(name = "seller_id", columnDefinition = "integer")
   private User seller;
 
   @JsonIgnore
@@ -122,5 +122,18 @@ public class Transaction implements Serializable {
   @Override
   public int hashCode() {
     return id.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append(getPhoto().getTitle());
+    builder.append(", Bought on ");
+    builder.append(getDate());
+    builder.append(", From ");
+    builder.append(getSeller().getUserName());
+    builder.append(", For ");
+    builder.append(getListPrice());
+    return builder.toString();
   }
 }

@@ -2,6 +2,7 @@ package ca.maickel.bpsback.domain;
 
 import ca.maickel.bpsback.dto.UserDTO;
 import ca.maickel.bpsback.enums.Profile;
+import ca.maickel.bpsback.security.UserSecurity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -45,6 +46,12 @@ public class User implements Serializable {
   @JoinColumn(name = "user")
   private List<Photo> photos = new ArrayList<>();
 
+  public User(UserSecurity user) {
+    this.id = user.getId();
+    this.userName = user.getEmail();
+    this.email = user.getUsername();
+  }
+
   @PreRemove
   public void onPreRemove() {
     soldTransactions.stream()
@@ -55,11 +62,11 @@ public class User implements Serializable {
             });
   }
 
-  public Set<Profile> getProfiles(){
-    return profiles.stream().map( profile -> Profile.toEnum(profile)).collect(Collectors.toSet());
+  public Set<Profile> getProfiles() {
+    return profiles.stream().map(profile -> Profile.toEnum(profile)).collect(Collectors.toSet());
   }
 
-  public void addProfile(Profile profile){
+  public void addProfile(Profile profile) {
     profiles.add(profile.getCode());
   }
 

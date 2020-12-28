@@ -32,15 +32,17 @@ public class UserService {
     }
   }
 
-  public UserService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository repo, PhotoService photoService) {
+  public UserService(
+      BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository repo, PhotoService photoService) {
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     this.repo = repo;
     this.photoService = photoService;
   }
 
+  /** Only himself can get his own data */
   public User find(Integer id) {
     UserSecurity user = authenticated();
-    if(user == null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())){
+    if (user == null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())) {
       throw new AuthorizationException("Access not allowed");
     }
     Optional<User> obj = repo.findById(id);
@@ -48,6 +50,25 @@ public class UserService {
         () ->
             new ObjectNotFoundException(
                 "Object not Found: " + id + ", Type: " + User.class.getName()));
+  }
+
+  /** Any logged user can get other usernames by id */
+  public String findUsernameById(Integer id) {
+    UserSecurity user = authenticated();
+    if (user == null) {
+      throw new AuthorizationException("Access not allowed");
+    }
+    Optional<User> obj = repo.findById(id);
+    if (!obj.isPresent()) {
+      /**
+       * This is odd but it is not accepting not returning something even with while throwing exception. Gotta
+       * return to this
+       */
+      new ObjectNotFoundException("Object not Found: " + id + ", Type: " + User.class.getName());
+      return null;
+    } else {
+      return obj.get().getUserName();
+    }
   }
 
   public List<User> findAll() {

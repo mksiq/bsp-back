@@ -17,9 +17,13 @@ import java.util.Optional;
 public class TransactionService {
 
   private final TransactionRepository repo;
+  private final UserService userService;
+  private final PhotoService photoService;
 
-  public TransactionService(TransactionRepository repo) {
+  public TransactionService(TransactionRepository repo, UserService userService, PhotoService photoService) {
     this.repo = repo;
+    this.userService = userService;
+    this.photoService = photoService;
   }
 
   public Transaction find(Integer id) {
@@ -58,12 +62,18 @@ public class TransactionService {
   /** User must be logged in and the transaction buyer must match him */
   public Transaction insert(Transaction obj) {
     UserSecurity user = UserService.authenticated();
-    if (user == null
-        || !user.hasRole(Profile.ADMIN) && !obj.getBuyer().getId().equals(user.getId())) {
+    if (user == null) {
       throw new AuthorizationException("Access not allowed");
     }
     obj.setId(null);
+    obj.setBuyer(new User(user));
+    User seller = new User();
+    seller.setId(obj.getPhoto().getUser().getId());
+    seller.setUserName(userService.findUsernameById(obj.getPhoto().getUser().getId()));
+    obj.setSeller(seller);
+    obj.setPhoto(photoService.find(obj.getPhoto().getId()));
     obj = repo.save(obj);
+    System.out.println(obj);
     return obj;
   }
 

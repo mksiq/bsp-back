@@ -44,9 +44,12 @@ public class TransactionResource {
   }
 
   /** Only logged users may post new transactions */
-  @PreAuthorize("hasAnyRole('REGULAR')")
+ // @PreAuthorize("hasAnyRole('REGULAR')")
   @RequestMapping(method = RequestMethod.POST)
   public ResponseEntity<Void> insert(@RequestBody NewTransactionDTO objDTO) {
+
+    System.out.println(" ***   CALLED INSERT TRANSACTION ***");
+
     objDTO.setPhoto(photoService.find(objDTO.getPhoto().getId()));
     // Buying a photo must increase its downloads number
     photoService.increaseDownloads(objDTO.getPhoto());

@@ -5,12 +5,14 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
+/**
+ * Tags defines tag categories for photos, each photo can have many tags And each tag can have many
+ * photos. Tags are unique in its name.
+ */
 @Entity
 @Table(name = "tag")
 public class Tag implements Serializable {
@@ -22,7 +24,7 @@ public class Tag implements Serializable {
 
   @NotEmpty
   @Size(max = 100)
-  @NaturalId
+  @NaturalId(mutable = true)
   private String tag;
 
   @ManyToMany(

@@ -1,6 +1,7 @@
 package ca.maickel.bpsback.services;
 
 import ca.maickel.bpsback.domain.Tag;
+import ca.maickel.bpsback.domain.User;
 import ca.maickel.bpsback.dto.TagDTO;
 import ca.maickel.bpsback.repositories.TagRepository;
 import ca.maickel.bpsback.services.exceptions.ObjectNotFoundException;
@@ -71,5 +72,20 @@ public class TagService {
                 })
             .collect(Collectors.toSet());
     return tags;
+  }
+
+  public void delete(Integer id) {
+    repo.deleteById(id);
+  }
+
+  public Tag update(Tag obj) {
+    Tag newObj = find(obj.getId());
+    updateData(newObj, obj);
+    newObj.setTag(newObj.getTag().toLowerCase(Locale.ROOT));
+    return repo.save(newObj);
+  }
+  /** Allows only update for tag name */
+  private void updateData(Tag newObj, Tag obj) {
+    newObj.setTag(obj.getTag());
   }
 }

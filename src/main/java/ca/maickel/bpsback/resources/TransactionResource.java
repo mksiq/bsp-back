@@ -6,6 +6,7 @@ import ca.maickel.bpsback.dto.TransactionDTO;
 import ca.maickel.bpsback.services.PhotoService;
 import ca.maickel.bpsback.services.TransactionService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -32,6 +33,8 @@ public class TransactionResource {
     return ResponseEntity.ok().body(objDTO);
   }
 
+  /** Only admins may get all transactions */
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity<?> findAll() {
     List<Transaction> list = service.findAll();
@@ -40,6 +43,8 @@ public class TransactionResource {
     return ResponseEntity.ok().body(listDTO);
   }
 
+  /** Only logged users may post new transactions */
+  @PreAuthorize("hasAnyRole('REGULAR')")
   @RequestMapping(method = RequestMethod.POST)
   public ResponseEntity<Void> insert(@RequestBody NewTransactionDTO objDTO) {
     objDTO.setPhoto(photoService.find(objDTO.getPhoto().getId()));
@@ -53,5 +58,13 @@ public class TransactionResource {
             .buildAndExpand(obj.getId())
             .toUri();
     return ResponseEntity.created(uri).build();
+  }
+
+  /** Only admins may delete a transaction */
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+  public ResponseEntity<Void> delete(@PathVariable Integer id) {
+    service.delete(id);
+    return ResponseEntity.noContent().build();
   }
 }

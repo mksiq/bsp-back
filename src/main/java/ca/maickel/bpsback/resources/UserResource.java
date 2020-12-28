@@ -8,6 +8,7 @@ import ca.maickel.bpsback.services.PhotoService;
 import ca.maickel.bpsback.services.TransactionService;
 import ca.maickel.bpsback.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -51,6 +52,8 @@ public class UserResource {
     return ResponseEntity.ok().body(obj);
   }
 
+  /** Only admins may get all users */
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity<?> findAll() {
     List<User> list = service.findAll();

@@ -48,4 +48,7 @@ public class TransactionService {
     obj = repo.save(obj);
     return obj;
   }
+
+  public void delete(Integer id) { repo.deleteById(id);
+  }
 }

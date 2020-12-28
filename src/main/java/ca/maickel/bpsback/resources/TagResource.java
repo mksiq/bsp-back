@@ -60,13 +60,14 @@ public class TagResource {
     return ResponseEntity.created(uri).build();
   }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
   public ResponseEntity<Void> delete(@PathVariable Integer id) {
     service.delete(id);
     return ResponseEntity.noContent().build();
   }
 
+  /** As tags are inserted by users an admin may choose to update sensitive names or typos */
   @PreAuthorize("hasAnyRole('ADMIN')")
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
   public ResponseEntity<Void> update(@RequestBody TagDTO objDTO, @PathVariable Integer id) {

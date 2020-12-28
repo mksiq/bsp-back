@@ -31,10 +31,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private final JWTUtil jwtUtil;
 
   private final UserDetailsService userDetailsService;
-  /** These endpoints are free to access */
-  private static final String[] PUBLIC_MATCHERS = {"/h2-console/**", "/users/**"};
-  /** These GET endpoints are free to access */
+  /** These endpoints are free to access for testing */
+  private static final String[] PUBLIC_MATCHERS = {"/h2-console/**"};
+  /** These GET endpoints are free to access for non logged users */
   private static final String[] PUBLIC_MATCHERS_GET = {"/photos/**", "/tags/**"};
+  /** These POST endpoints are free to access. A non logged user may register himself */
+  private static final String[] PUBLIC_MATCHERS_POST = {"/users/**"};
 
   public SecurityConfig(
       Environment environment,
@@ -57,6 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.cors().and().csrf().disable();
     http.authorizeRequests()
         .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET)
+        .permitAll()
+        .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST)
         .permitAll()
         .antMatchers(PUBLIC_MATCHERS)
         .permitAll()

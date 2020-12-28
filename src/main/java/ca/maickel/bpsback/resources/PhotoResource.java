@@ -8,6 +8,7 @@ import ca.maickel.bpsback.dto.UserDTO;
 import ca.maickel.bpsback.services.PhotoService;
 import ca.maickel.bpsback.services.TagService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -43,6 +44,8 @@ public class PhotoResource {
     return ResponseEntity.ok().body(listDTO);
   }
 
+  /** Only logged users may insert new photos */
+  @PreAuthorize("hasAnyRole('REGULAR')")
   @RequestMapping(method = RequestMethod.POST)
   public ResponseEntity<Void> insert(@RequestBody NewPhotoDTO objDTO) {
     Photo obj = service.fromDTO(objDTO);
@@ -59,6 +62,8 @@ public class PhotoResource {
     return ResponseEntity.created(uri).build();
   }
 
+  /** Only logged users may update photos */
+  @PreAuthorize("hasAnyRole('REGULAR')")
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
   public ResponseEntity<Void> update(@RequestBody NewPhotoDTO objDTO, @PathVariable Integer id) {
     Photo obj = new Photo(objDTO);

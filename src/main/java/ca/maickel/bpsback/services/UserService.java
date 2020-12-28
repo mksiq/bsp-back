@@ -2,8 +2,12 @@ package ca.maickel.bpsback.services;
 
 import ca.maickel.bpsback.domain.User;
 import ca.maickel.bpsback.dto.UserDTO;
+import ca.maickel.bpsback.enums.Profile;
 import ca.maickel.bpsback.repositories.UserRepository;
+import ca.maickel.bpsback.security.UserSecurity;
+import ca.maickel.bpsback.services.exceptions.AuthorizationException;
 import ca.maickel.bpsback.services.exceptions.ObjectNotFoundException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +23,15 @@ public class UserService {
 
   private final PhotoService photoService;
 
+  /** return logged and authenticated user */
+  public static UserSecurity authenticated() {
+    try {
+      return (UserSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
   public UserService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository repo, PhotoService photoService) {
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     this.repo = repo;
@@ -26,6 +39,10 @@ public class UserService {
   }
 
   public User find(Integer id) {
+    UserSecurity user = authenticated();
+    if(user == null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())){
+      throw new AuthorizationException("Access not allowed");
+    }
     Optional<User> obj = repo.findById(id);
     return obj.orElseThrow(
         () ->

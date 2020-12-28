@@ -4,7 +4,10 @@ import ca.maickel.bpsback.domain.Photo;
 import ca.maickel.bpsback.domain.Tag;
 import ca.maickel.bpsback.domain.User;
 import ca.maickel.bpsback.dto.NewPhotoDTO;
+import ca.maickel.bpsback.enums.Profile;
 import ca.maickel.bpsback.repositories.PhotoRepository;
+import ca.maickel.bpsback.security.UserSecurity;
+import ca.maickel.bpsback.services.exceptions.AuthorizationException;
 import ca.maickel.bpsback.services.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -55,8 +58,14 @@ public class PhotoService {
     return new Photo(objDTO);
   }
 
+  /** only a logged user may insert a photo owned by himself */
   public Photo insert(Photo obj) {
     obj.setId(null);
+    UserSecurity user = UserService.authenticated();
+    if (user == null
+        || !user.hasRole(Profile.ADMIN) && !obj.getUser().getId().equals(user.getId())) {
+      throw new AuthorizationException("Access not allowed");
+    }
     obj = repo.save(obj);
     return obj;
   }
@@ -71,6 +80,11 @@ public class PhotoService {
   }
 
   public Photo update(Photo obj) {
+    UserSecurity user = UserService.authenticated();
+    if (user == null
+        || !user.hasRole(Profile.ADMIN) && !obj.getUser().getId().equals(user.getId())) {
+      throw new AuthorizationException("Access not allowed");
+    }
     Photo newObj = find(obj.getId());
     updateData(newObj, obj);
     return repo.save(newObj);

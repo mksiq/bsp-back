@@ -1,6 +1,5 @@
 package ca.maickel.bpsback.security;
 
-import ca.maickel.bpsback.domain.User;
 import ca.maickel.bpsback.enums.Profile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,7 +21,10 @@ public class UserSecurity implements UserDetails {
     this.id = id;
     this.email = email;
     this.password = password;
-    this.authorities = roles.stream().map( role -> new SimpleGrantedAuthority(role.getDescription())).collect(Collectors.toSet());
+    this.authorities =
+        roles.stream()
+            .map(role -> new SimpleGrantedAuthority(role.getDescription()))
+            .collect(Collectors.toSet());
   }
 
   public Integer getId() {
@@ -66,5 +68,9 @@ public class UserSecurity implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  public boolean hasRole(Profile profile) {
+    return getAuthorities().contains(new SimpleGrantedAuthority(profile.getDescription()));
   }
 }

@@ -56,6 +56,8 @@ public class PhotoDTO implements Serializable {
     this.downloads = photo.getDownloads();
     try {
       this.user = new UserDTO(photo.getUser());
+      this.user.setEmail(null);
+      this.user.setPassword(null);
     } catch (NullPointerException e) {
       this.user = new UserDTO();
       this.user.setUserName("Removed User");

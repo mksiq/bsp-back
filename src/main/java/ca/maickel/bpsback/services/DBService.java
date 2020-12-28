@@ -4,6 +4,7 @@ import ca.maickel.bpsback.domain.Photo;
 import ca.maickel.bpsback.domain.Tag;
 import ca.maickel.bpsback.domain.Transaction;
 import ca.maickel.bpsback.domain.User;
+import ca.maickel.bpsback.enums.Profile;
 import ca.maickel.bpsback.repositories.PhotoRepository;
 import ca.maickel.bpsback.repositories.TagRepository;
 import ca.maickel.bpsback.repositories.TransactionRepository;
@@ -45,6 +46,7 @@ public class DBService {
     // public User(Integer id, String userName, String email, String password, LocalDate signUpDate)
     // {
     User u1 = new User(null, "msiqueira", "bts@gmail.com", bCryptPasswordEncoder.encode("a"), LocalDate.now());
+    u1.addProfile(Profile.ADMIN);
     User u2 = new User(null, "someone", "s@gmail.com",  bCryptPasswordEncoder.encode("b"), LocalDate.now());
     User u3 = new User(null, "john", "j@gmail.com",  bCryptPasswordEncoder.encode("c"), LocalDate.now());
     //		fileName, Integer width, Integer height, Double price, LocalDate date, String title, Integer

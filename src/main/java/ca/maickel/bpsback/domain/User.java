@@ -1,13 +1,17 @@
 package ca.maickel.bpsback.domain;
 
 import ca.maickel.bpsback.dto.UserDTO;
+import ca.maickel.bpsback.enums.Profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "user")
@@ -17,13 +21,18 @@ public class User implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
+
   @Column(unique = true)
   private String userName;
+
   @Column(unique = true)
   private String email;
 
-  @JsonIgnore
-  private String password;
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "profiles")
+  private Set<Integer> profiles = new HashSet<>();
+
+  @JsonIgnore private String password;
   private LocalDate signUpDate;
 
   @OneToMany(mappedBy = "buyer")
@@ -37,16 +46,30 @@ public class User implements Serializable {
   private List<Photo> photos = new ArrayList<>();
 
   @PreRemove
-  public void onPreRemove(){
-    soldTransactions.stream().forEach( transaction -> {
-      transaction.setBuyer(null);
-      transaction.setSeller(null);
-    });
+  public void onPreRemove() {
+    soldTransactions.stream()
+        .forEach(
+            transaction -> {
+              transaction.setBuyer(null);
+              transaction.setSeller(null);
+            });
   }
-  public User() {}
+
+  public Set<Profile> getProfiles(){
+    return profiles.stream().map( profile -> Profile.toEnum(profile)).collect(Collectors.toSet());
+  }
+
+  public void addProfile(Profile profile){
+    profiles.add(profile.getCode());
+  }
+
+  public User() {
+    addProfile(Profile.REGULAR);
+  }
   ;
 
   public User(Integer id, String userName, String email, String password, LocalDate signUpDate) {
+    addProfile(Profile.REGULAR);
     this.id = id;
     this.userName = userName;
     this.email = email;

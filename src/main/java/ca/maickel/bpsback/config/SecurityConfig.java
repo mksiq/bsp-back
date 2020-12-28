@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final UserDetailsService userDetailsService;
   /** These endpoints are free to access */
-  private static final String[] PUBLIC_MATCHERS = {"/h2-console/**"};
+  private static final String[] PUBLIC_MATCHERS = {"/h2-console/**", "/users/**"};
   /** These GET endpoints are free to access */
   private static final String[] PUBLIC_MATCHERS_GET = {"/photos/**", "/tags/**"};
 

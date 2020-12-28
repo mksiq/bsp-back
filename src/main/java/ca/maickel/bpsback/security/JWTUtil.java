@@ -9,10 +9,10 @@ import java.util.Date;
 
 @Component
 public class JWTUtil {
-  @Value("thisWillBeChanged")
+  @Value("${jwt.secret}")
   private String secret;
 
-  @Value("30000")
+  @Value("${jwt.expiration}")
   private Long expiration;
 
   public String generateToken(String email) {

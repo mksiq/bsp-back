@@ -1,10 +1,14 @@
 package ca.maickel.bpsback.security;
 
 import ca.maickel.bpsback.domain.User;
+import ca.maickel.bpsback.enums.Profile;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserSecurity implements UserDetails {
 
@@ -12,11 +16,13 @@ public class UserSecurity implements UserDetails {
   private Integer id;
   private String email;
   private String password;
+  private Collection<? extends GrantedAuthority> authorities;
 
-  public UserSecurity(User user) {
-    this.id = user.getId();
-    this.email = user.getEmail();
-    this.password = user.getPassword();
+  public UserSecurity(Integer id, String email, String password, Set<Profile> roles) {
+    this.id = id;
+    this.email = email;
+    this.password = password;
+    this.authorities = roles.stream().map( role -> new SimpleGrantedAuthority(role.getDescription())).collect(Collectors.toSet());
   }
 
   public Integer getId() {
@@ -29,7 +35,7 @@ public class UserSecurity implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
+    return authorities;
   }
 
   @Override

@@ -33,12 +33,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   /** These GET endpoints are free to access */
   private static final String[] PUBLIC_MATCHERS_GET = {"/photos/**", "/tags/**"};
 
-  public SecurityConfig(Environment environment, JWTUtil jwtUtil, @Qualifier("UserDetailsServiceImpl") UserDetailsService userDetailsService) {
+  public SecurityConfig(
+      Environment environment,
+      JWTUtil jwtUtil,
+      @Qualifier("UserDetailsServiceImpl") UserDetailsService userDetailsService) {
     this.environment = environment;
     this.jwtUtil = jwtUtil;
     this.userDetailsService = userDetailsService;
   }
-
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {

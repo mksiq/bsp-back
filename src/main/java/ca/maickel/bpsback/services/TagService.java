@@ -7,6 +7,7 @@ import ca.maickel.bpsback.services.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,14 +33,17 @@ public class TagService {
     return repo.findAll();
   }
 
+  /** Looks for a tag ignoring the case */
   public Tag findByTag(String tag) {
     return repo.findByTagIgnoreCase(tag);
   }
 
+  /** Saves a new tag in lower case */
   public Tag insert(Tag obj) {
     Tag foundTag = findByTag(obj.getTag());
     if (foundTag == null) {
       obj.setId(null);
+      obj.setTag(obj.getTag().toLowerCase(Locale.ROOT));
       obj = repo.save(obj);
     } else {
       obj = foundTag;

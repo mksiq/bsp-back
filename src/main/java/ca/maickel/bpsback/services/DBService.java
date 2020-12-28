@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+/** Initializes Database with some objects for testing purposes */
 @Service
 public class DBService {
   private final BCryptPasswordEncoder bCryptPasswordEncoder;

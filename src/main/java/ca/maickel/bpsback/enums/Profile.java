@@ -1,5 +1,6 @@
 package ca.maickel.bpsback.enums;
 
+/** Defines profile role of an user for authorization */
 public enum Profile {
   ADMIN(1, "ROLE_ADMIN"),
   REGULAR(2, "ROLE_REGULAR");

@@ -35,6 +35,7 @@ public class PhotoService {
     return repo.findAll();
   }
 
+  /** Returns photo by the buyer and removes tag and user to avoid Json recursion */
   public List<Photo> findAllByUser(User user) {
     List<Photo> cleared = repo.findAllByUser(user);
     cleared =
@@ -60,15 +61,17 @@ public class PhotoService {
     return obj;
   }
 
+  /**
+   * Everytime a transaction is inserted this function is called to update the this download count
+   */
   public Photo increaseDownloads(Photo obj) {
-    /** Everytime a transaction is inserted this function is called to update the this download count */
     obj.setDownloads(obj.getDownloads() + 1);
     obj = repo.save(obj);
     return obj;
   }
 
   public Photo update(Photo obj) {
-    Photo newObj  = find(obj.getId());
+    Photo newObj = find(obj.getId());
     updateData(newObj, obj);
     return repo.save(newObj);
   }

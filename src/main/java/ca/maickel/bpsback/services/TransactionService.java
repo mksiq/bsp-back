@@ -19,11 +19,13 @@ public class TransactionService {
   private final TransactionRepository repo;
   private final UserService userService;
   private final PhotoService photoService;
+  private final EmailService emailService;
 
-  public TransactionService(TransactionRepository repo, UserService userService, PhotoService photoService) {
+  public TransactionService(TransactionRepository repo, UserService userService, PhotoService photoService, EmailService emailService) {
     this.repo = repo;
     this.userService = userService;
     this.photoService = photoService;
+    this.emailService = emailService;
   }
 
   public Transaction find(Integer id) {
@@ -73,7 +75,7 @@ public class TransactionService {
     obj.setSeller(seller);
     obj.setPhoto(photoService.find(obj.getPhoto().getId()));
     obj = repo.save(obj);
-    System.out.println(obj);
+    emailService.sendTransactionConfirmationEmail(obj);
     return obj;
   }
 

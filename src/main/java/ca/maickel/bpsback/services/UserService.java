@@ -20,7 +20,7 @@ public class UserService {
 
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
   private final UserRepository repo;
-
+  private final EmailService emailService;
   private final PhotoService photoService;
 
   /** return logged and authenticated user */
@@ -33,9 +33,10 @@ public class UserService {
   }
 
   public UserService(
-      BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository repo, PhotoService photoService) {
+          BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository repo, EmailService emailService, PhotoService photoService) {
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     this.repo = repo;
+    this.emailService = emailService;
     this.photoService = photoService;
   }
 
@@ -79,6 +80,7 @@ public class UserService {
   public User insert(User obj) {
     obj.setId(null);
     obj = repo.save(obj);
+    emailService.sendSignupConfirmationEmail(obj);
     return obj;
   }
 

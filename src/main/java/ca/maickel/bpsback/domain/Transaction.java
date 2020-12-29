@@ -5,7 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Entity
 @Table(name = "transaction")
@@ -127,13 +131,16 @@ public class Transaction implements Serializable {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
+    builder.append("Photo: ");
     builder.append(getPhoto().getTitle());
     builder.append(", Bought on ");
-    builder.append(getDate());
+    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+    builder.append(dateFormat.format(getDate()));
     builder.append(", From ");
     builder.append(getSeller().getUserName());
     builder.append(", For ");
-    builder.append(getListPrice());
+    NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "CA"));
+    builder.append(formatter.format(getListPrice()));
     return builder.toString();
   }
 }

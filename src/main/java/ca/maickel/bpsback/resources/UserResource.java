@@ -39,17 +39,23 @@ public class UserResource {
     obj.setPhotos(ownedPhotos);
     List<Transaction> boughtTransactionsList = transactionService.findAllByBuyer(obj);
     List<Transaction> soldTransactionsList = transactionService.findAllBySeller(obj);
+    boughtTransactionsList.forEach(transaction -> transaction.setBuyer(null));
+    soldTransactionsList.forEach(transaction -> transaction.setBuyer(null));
     obj.setBoughtTransactions(boughtTransactionsList);
     obj.setSoldTransactions(soldTransactionsList);
-
-    for (int i = 0; i < obj.getBoughtTransactions().size(); ++i) {
-      obj.getBoughtTransactions().get(i).setBuyer(null);
-    }
-    for (int i = 0; i < obj.getSoldTransactions().size(); ++i) {
-      obj.getSoldTransactions().get(i).setBuyer(null);
-    }
-
     return ResponseEntity.ok().body(obj);
+  }
+
+  @RequestMapping(value = "/email", method = RequestMethod.GET)
+  public ResponseEntity<?> find(@RequestParam(value="value") String email) {
+    System.out.println("Test");
+    User obj = service.findByEmail(email);
+    UserDTO user = null;
+    if(obj != null){
+      user = new UserDTO(obj);
+      user.setPassword("");
+    }
+    return ResponseEntity.ok().body(user);
   }
 
   /** Only admins may get all users */

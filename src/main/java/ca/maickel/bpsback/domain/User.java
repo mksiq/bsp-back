@@ -34,7 +34,8 @@ public class User implements Serializable {
   @CollectionTable(name = "profiles")
   private Set<Integer> profiles = new HashSet<>();
 
-  @JsonIgnore private String password;
+  @JsonIgnore
+  private String password;
   private LocalDate signUpDate;
 
   @OneToMany(mappedBy = "buyer")

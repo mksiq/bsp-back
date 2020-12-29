@@ -33,7 +33,10 @@ public class UserService {
   }
 
   public UserService(
-          BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository repo, EmailService emailService, PhotoService photoService) {
+      BCryptPasswordEncoder bCryptPasswordEncoder,
+      UserRepository repo,
+      EmailService emailService,
+      PhotoService photoService) {
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     this.repo = repo;
     this.emailService = emailService;
@@ -61,15 +64,24 @@ public class UserService {
     }
     Optional<User> obj = repo.findById(id);
     if (!obj.isPresent()) {
-      /**
-       * This is odd but it is not accepting not returning something even with while throwing exception. Gotta
-       * return to this
-       */
-      new ObjectNotFoundException("Object not Found: " + id + ", Type: " + User.class.getName());
-      return null;
+      throw new ObjectNotFoundException(
+          "Object not Found: " + id + ", Type: " + User.class.getName());
     } else {
       return obj.get().getUserName();
     }
+  }
+
+  public User findByEmail(String email) {
+    UserSecurity user = UserService.authenticated();
+    if (user == null || !user.hasRole(Profile.ADMIN) && !email.equals(user.getUsername())) {
+      throw new AuthorizationException("Access not allowed");
+    }
+    User obj = find(user.getId());
+    if (obj == null) {
+      throw new ObjectNotFoundException(
+          "Object not Found: " + user.getId() + ", Type: " + User.class.getName());
+    }
+    return obj;
   }
 
   public List<User> findAll() {

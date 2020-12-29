@@ -1,15 +1,20 @@
 package ca.maickel.bpsback.services;
 
+import ca.maickel.bpsback.services.exceptions.FileException;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Service
 public class S3Service {
@@ -24,16 +29,26 @@ public class S3Service {
     this.s3client = s3client;
   }
 
-  public void uploadFile(String path) {
+  public URI uploadFile(MultipartFile multipartFile) {
     try {
-      File file = new File(path);
-      s3client.putObject(new PutObjectRequest(bucketName, "firstFile.jpg", file));
-    } catch (AmazonServiceException exception) {
-      LOG.info("Amazon Exception:" + exception.getErrorCode());
-      LOG.info(exception.getErrorMessage());
-    } catch (AmazonClientException exception) {
-        LOG.info("Amazon Client Exception:" + exception.getMessage());
-      LOG.info("Cause:" + exception.getCause());
+      String fileName = multipartFile.getOriginalFilename();
+      InputStream is = multipartFile.getInputStream();
+      String contentType = multipartFile.getContentType();
+      return uploadFile(is, fileName, contentType);
+    } catch (IOException exception) {
+      throw new FileException("Error while uploading photo");
+    }
+  }
+
+  public URI uploadFile(InputStream is, String fileName, String contentType) {
+    try {
+      ObjectMetadata meta = new ObjectMetadata();
+      meta.setContentType(contentType);
+      LOG.info("Right before upload");
+      s3client.putObject(bucketName, fileName, is, meta);
+      return s3client.getUrl(bucketName, fileName).toURI();
+    } catch (URISyntaxException e) {
+      throw new FileException("Error while converting URL to URI in photo upload");
     }
   }
 }

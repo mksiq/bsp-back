@@ -10,7 +10,9 @@ import ca.maickel.bpsback.security.UserSecurity;
 import ca.maickel.bpsback.services.exceptions.AuthorizationException;
 import ca.maickel.bpsback.services.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -21,9 +23,11 @@ import java.util.stream.Collectors;
 public class PhotoService {
 
   private final PhotoRepository repo;
+  private final S3Service s3Service;
 
-  public PhotoService(PhotoRepository repo) {
+  public PhotoService(PhotoRepository repo, S3Service s3Service) {
     this.repo = repo;
+    this.s3Service = s3Service;
   }
 
   public Photo find(Integer id) {
@@ -94,5 +98,9 @@ public class PhotoService {
     newObj.setTitle(obj.getTitle());
     newObj.setPrice(obj.getPrice());
     newObj.setTags(obj.getTags());
+  }
+
+  public URI uploadPhoto(MultipartFile file){
+    return s3Service.uploadFile(file);
   }
 }

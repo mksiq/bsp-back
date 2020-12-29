@@ -1,15 +1,14 @@
 package ca.maickel.bpsback.resources;
 
 import ca.maickel.bpsback.domain.Photo;
-import ca.maickel.bpsback.domain.User;
 import ca.maickel.bpsback.dto.NewPhotoDTO;
 import ca.maickel.bpsback.dto.PhotoDTO;
-import ca.maickel.bpsback.dto.UserDTO;
 import ca.maickel.bpsback.services.PhotoService;
 import ca.maickel.bpsback.services.TagService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -72,10 +71,18 @@ public class PhotoResource {
     obj.setTags(tagService.insertNTags(obj.getTags()));
     obj = service.update(obj);
     URI uri =
-            ServletUriComponentsBuilder.fromCurrentRequestUri()
-                    .path("")
-                    .buildAndExpand(obj.getId())
-                    .toUri();
+        ServletUriComponentsBuilder.fromCurrentRequestUri()
+            .path("")
+            .buildAndExpand(obj.getId())
+            .toUri();
+    return ResponseEntity.created(uri).build();
+  }
+
+  /** Only logged users may insert new photos */
+  // @PreAuthorize("hasAnyRole('REGULAR')")
+  @RequestMapping(value = "/upload", method = RequestMethod.POST)
+  public ResponseEntity<Void> insertPhoto(@RequestParam(name="file") MultipartFile file) {
+    URI uri = service.uploadPhoto(file);
     return ResponseEntity.created(uri).build();
   }
 }

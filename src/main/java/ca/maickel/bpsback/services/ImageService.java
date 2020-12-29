@@ -2,6 +2,7 @@ package ca.maickel.bpsback.services;
 
 import ca.maickel.bpsback.services.exceptions.FileException;
 import org.apache.commons.io.FilenameUtils;
+import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,5 +48,24 @@ public class ImageService {
     } catch (IOException e) {
       throw new FileException("Error on reading photo file");
     }
+  }
+  /**
+   * Crop the image to square/ Gets the minimum size to find out if it is a vertical or horizontal
+   * image
+   */
+  public BufferedImage crop(BufferedImage image) {
+    //
+    int size = (image.getHeight() <= image.getWidth()) ? image.getHeight() : image.getHeight();
+    return Scalr.crop(
+        image,
+        (image.getWidth() / 2) - (size / 2),
+        (image.getHeight() / 2) - (size / 2),
+        size,
+        size);
+  }
+
+  /** Resizes the size of image */
+  public BufferedImage resize(BufferedImage image, int size) {
+    return Scalr.resize(image, Scalr.Method.ULTRA_QUALITY, size);
   }
 }

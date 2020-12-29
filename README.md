@@ -20,7 +20,7 @@ For the database, it uses for testing H2DB, MySQL in the production version.
 
 Both Java server and MySQL db is hosted on Heroku.
 
-Photos are stored on Amazon AWS S3.
+Photos are stored on Amazon AWS S3. To save space and bandwidth the images are resized to only 1600px of width. The Thumbnails are created with only 300px and cropped into squares. 
 
 Authentication is done with the use of Tokens Auth0 JWT.
 

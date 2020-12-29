@@ -9,6 +9,7 @@ import ca.maickel.bpsback.repositories.PhotoRepository;
 import ca.maickel.bpsback.security.UserSecurity;
 import ca.maickel.bpsback.services.exceptions.AuthorizationException;
 import ca.maickel.bpsback.services.exceptions.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class PhotoService {
+
+  @Value("${img.photo.real.width}")
+  private int width;
+  @Value("${img.photo.thumbnail.size}")
+  private int thumbnailSize;
 
   private final PhotoRepository repo;
   private final S3Service s3Service;
@@ -104,8 +110,9 @@ public class PhotoService {
   }
 
   /**
-   * Uploads photo right after inserting a photo object. Converts to jpg and renames the file into a
-   * photo id then updates photo filename to generated URI
+   * Uploads resized photo right after inserting a photo object. Converts to jpg and renames the
+   * file into a photo id then updates photo filename to generated URI. The Image size is reduced
+   * for optimization while using a free bucket on Aws. Also, uploads a square thumbnail.
    */
   public URI uploadPhoto(MultipartFile file, Integer id) {
     UserSecurity user = UserService.authenticated();
@@ -115,6 +122,13 @@ public class PhotoService {
     }
     String fileName = "photo_" + id + ".jpg";
     BufferedImage jpgImg = imageService.getJpgImgFromFile(file);
+    jpgImg = imageService.resize(jpgImg, width);
+
+    // Creates thumbnail and uploads it
+    BufferedImage thumbnail = imageService.crop(jpgImg);
+    thumbnail = imageService.resize(thumbnail, thumbnailSize);
+    s3Service.uploadFile(imageService.getInputStream(thumbnail, "jpg"), ("th_" + fileName), "image");
+
     URI uri = s3Service.uploadFile(imageService.getInputStream(jpgImg, "jpg"), fileName, "image");
     photo.setFileName(uri.toString());
     repo.save(photo);

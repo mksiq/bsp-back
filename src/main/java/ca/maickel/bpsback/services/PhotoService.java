@@ -12,6 +12,7 @@ import ca.maickel.bpsback.services.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.List;
@@ -24,10 +25,12 @@ public class PhotoService {
 
   private final PhotoRepository repo;
   private final S3Service s3Service;
+  private final ImageService imageService;
 
-  public PhotoService(PhotoRepository repo, S3Service s3Service) {
+  public PhotoService(PhotoRepository repo, S3Service s3Service, ImageService imageService) {
     this.repo = repo;
     this.s3Service = s3Service;
+    this.imageService = imageService;
   }
 
   public Photo find(Integer id) {
@@ -100,7 +103,21 @@ public class PhotoService {
     newObj.setTags(obj.getTags());
   }
 
-  public URI uploadPhoto(MultipartFile file){
-    return s3Service.uploadFile(file);
+  /**
+   * Uploads photo right after inserting a photo object. Converts to jpg and renames the file into a
+   * photo id then updates photo filename to generated URI
+   */
+  public URI uploadPhoto(MultipartFile file, Integer id) {
+    UserSecurity user = UserService.authenticated();
+    Photo photo = find(id);
+    if (user == null || !user.hasRole(Profile.ADMIN) && !photo.getUser().getId().equals(id)) {
+      throw new AuthorizationException("Access not allowed");
+    }
+    String fileName = "photo_" + id + ".jpg";
+    BufferedImage jpgImg = imageService.getJpgImgFromFile(file);
+    URI uri = s3Service.uploadFile(imageService.getInputStream(jpgImg, "jpg"), fileName, "image");
+    photo.setFileName(uri.toString());
+    repo.save(photo);
+    return uri;
   }
 }

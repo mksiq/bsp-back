@@ -79,10 +79,10 @@ public class PhotoResource {
   }
 
   /** Only logged users may insert new photos */
-  // @PreAuthorize("hasAnyRole('REGULAR')")
-  @RequestMapping(value = "/upload", method = RequestMethod.POST)
-  public ResponseEntity<Void> insertPhoto(@RequestParam(name="file") MultipartFile file) {
-    URI uri = service.uploadPhoto(file);
+  @PreAuthorize("hasAnyRole('REGULAR')")
+  @RequestMapping(value = "/upload/{id}", method = RequestMethod.POST)
+  public ResponseEntity<Void> insertPhoto(@RequestParam(name="file") MultipartFile file, @PathVariable Integer id) {
+    URI uri = service.uploadPhoto(file, id);
     return ResponseEntity.created(uri).build();
   }
 }

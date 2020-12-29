@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   /** These GET endpoints are free to access for non logged users */
   private static final String[] PUBLIC_MATCHERS_GET = {"/photos/**", "/tags/**"};
   /** These POST endpoints are free to access. A non logged user may register himself */
-  private static final String[] PUBLIC_MATCHERS_POST = {"/users/**", "/photos/**"};
+  private static final String[] PUBLIC_MATCHERS_POST = {"/users/**"};
 
   public SecurityConfig(
       Environment environment,

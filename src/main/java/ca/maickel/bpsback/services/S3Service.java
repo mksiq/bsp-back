@@ -44,7 +44,6 @@ public class S3Service {
     try {
       ObjectMetadata meta = new ObjectMetadata();
       meta.setContentType(contentType);
-      LOG.info("Right before upload");
       s3client.putObject(bucketName, fileName, is, meta);
       return s3client.getUrl(bucketName, fileName).toURI();
     } catch (URISyntaxException e) {

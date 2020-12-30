@@ -131,6 +131,8 @@ public class PhotoService {
 
     URI uri = s3Service.uploadFile(imageService.getInputStream(jpgImg, "jpg"), fileName, "image");
     photo.setFileName(uri.toString());
+    photo.setWidth(jpgImg.getWidth());
+    photo.setHeight(jpgImg.getHeight());
     repo.save(photo);
     return uri;
   }

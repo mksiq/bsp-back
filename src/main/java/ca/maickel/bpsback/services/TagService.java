@@ -1,7 +1,6 @@
 package ca.maickel.bpsback.services;
 
 import ca.maickel.bpsback.domain.Tag;
-import ca.maickel.bpsback.domain.User;
 import ca.maickel.bpsback.dto.TagDTO;
 import ca.maickel.bpsback.repositories.TagRepository;
 import ca.maickel.bpsback.services.exceptions.ObjectNotFoundException;

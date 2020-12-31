@@ -1,8 +1,6 @@
 package ca.maickel.bpsback.services;
 
 import ca.maickel.bpsback.services.exceptions.FileException;
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import org.slf4j.Logger;

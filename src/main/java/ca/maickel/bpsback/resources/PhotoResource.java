@@ -49,6 +49,7 @@ public class PhotoResource {
   public ResponseEntity<Void> insert(@RequestBody NewPhotoDTO objDTO) {
     Photo obj = service.fromDTO(objDTO);
     obj.setId(null);
+    obj.setDownloads(0);
     obj.setDate(LocalDate.now());
     // Insert new tags and attaches id to existing tags
     obj.setTags(tagService.insertNTags(obj.getTags()));

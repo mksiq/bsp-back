@@ -133,6 +133,8 @@ public class PhotoService {
     photo.setFileName(uri.toString());
     photo.setWidth(jpgImg.getWidth());
     photo.setHeight(jpgImg.getHeight());
+    photo.setDownloads(0);
+
     repo.save(photo);
     return uri;
   }

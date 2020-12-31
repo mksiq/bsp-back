@@ -136,4 +136,8 @@ public class PhotoService {
     repo.save(photo);
     return uri;
   }
+
+  public void delete(Integer id) {
+    repo.deleteById(id);
+  }
 }

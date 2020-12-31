@@ -46,14 +46,14 @@ public class DBService {
 
     // public User(Integer id, String userName, String email, String password, LocalDate signUpDate)
     // {
-    User u1 = new User(null, "msiqueira", "bts@gmail.com", bCryptPasswordEncoder.encode("a"), LocalDate.now());
+    User u1 = new User(null, "msiqueira", "bts@gmail.com", bCryptPasswordEncoder.encode("password"), LocalDate.now());
     u1.addProfile(Profile.ADMIN);
     User u2 = new User(null, "someone", "s@gmail.com",  bCryptPasswordEncoder.encode("b"), LocalDate.now());
     User u3 = new User(null, "john", "j@gmail.com",  bCryptPasswordEncoder.encode("c"), LocalDate.now());
     //		fileName, Integer width, Integer height, Double price, LocalDate date, String title, Integer
     // downloads)
     Photo p1 =
-        new Photo(null, "banana.jpg", 800, 600, 5.99, LocalDate.now(), "Lonely Banana", 4, u1);
+        new Photo(null, "https://bps-photos-maickel.s3.amazonaws.com/photo_1.jpg", 800, 600, 5.99, LocalDate.now(), "Lonely Banana", 4, u1);
     Photo p2 = new Photo(null, "kiwi.jpg", 800, 600, 3.99, LocalDate.now(), "Lonely Kiwi", 1, u1);
     // public Transaction(Integer id, LocalDate date, Double listPrice, User buyer, User seller,
     // Photo photo) {

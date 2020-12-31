@@ -85,4 +85,12 @@ public class PhotoResource {
     URI uri = service.uploadPhoto(file, id);
     return ResponseEntity.created(uri).build();
   }
+
+  /** Only admins may delete photos */
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+  public ResponseEntity<Void> delete(@PathVariable Integer id) {
+    service.delete(id);
+    return ResponseEntity.noContent().build();
+  }
 }

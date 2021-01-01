@@ -117,7 +117,7 @@ public class PhotoService {
   public URI uploadPhoto(MultipartFile file, Integer id) {
     UserSecurity user = UserService.authenticated();
     Photo photo = find(id);
-    if (user == null || !user.hasRole(Profile.ADMIN) && !photo.getUser().getId().equals(id)) {
+    if (user == null || !user.hasRole(Profile.ADMIN) && !photo.getUser().getId().equals(user.getId())) {
       throw new AuthorizationException("Access not allowed");
     }
     String fileName = "photo_" + id + ".jpg";

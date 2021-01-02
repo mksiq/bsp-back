@@ -21,7 +21,7 @@ public class UserService {
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
   private final UserRepository repo;
   private final EmailService emailService;
-  private final PhotoService photoService;
+  private final PhotoServiceImpl photoServiceImpl;
 
   /** return logged and authenticated user */
   public static UserSecurity authenticated() {
@@ -33,14 +33,14 @@ public class UserService {
   }
 
   public UserService(
-      BCryptPasswordEncoder bCryptPasswordEncoder,
-      UserRepository repo,
-      EmailService emailService,
-      PhotoService photoService) {
+          BCryptPasswordEncoder bCryptPasswordEncoder,
+          UserRepository repo,
+          EmailService emailService,
+          PhotoServiceImpl photoServiceImpl) {
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     this.repo = repo;
     this.emailService = emailService;
-    this.photoService = photoService;
+    this.photoServiceImpl = photoServiceImpl;
   }
 
   /** Only himself can get his own data */

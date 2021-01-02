@@ -18,13 +18,13 @@ public class TransactionService {
 
   private final TransactionRepository repo;
   private final UserService userService;
-  private final PhotoService photoService;
+  private final PhotoServiceImpl photoServiceImpl;
   private final EmailService emailService;
 
-  public TransactionService(TransactionRepository repo, UserService userService, PhotoService photoService, EmailService emailService) {
+  public TransactionService(TransactionRepository repo, UserService userService, PhotoServiceImpl photoServiceImpl, EmailService emailService) {
     this.repo = repo;
     this.userService = userService;
-    this.photoService = photoService;
+    this.photoServiceImpl = photoServiceImpl;
     this.emailService = emailService;
   }
 
@@ -73,9 +73,8 @@ public class TransactionService {
     seller.setId(obj.getPhoto().getUser().getId());
     seller.setUserName(userService.findUsernameById(obj.getPhoto().getUser().getId()));
     obj.setSeller(seller);
-    obj.setPhoto(photoService.find(obj.getPhoto().getId()));
+    obj.setPhoto(photoServiceImpl.find(obj.getPhoto().getId()));
     obj = repo.save(obj);
-    emailService.sendTransactionConfirmationEmail(obj);
     return obj;
   }
 

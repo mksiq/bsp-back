@@ -91,6 +91,7 @@ public class PhotoServiceImpl implements PhotoService{
   /**
    * Everytime a transaction is inserted this function is called to update the this download count
    */
+  @Override
   public Photo increaseDownloads(Photo obj) {
     obj.setDownloads(obj.getDownloads() + 1);
     obj = repo.save(obj);

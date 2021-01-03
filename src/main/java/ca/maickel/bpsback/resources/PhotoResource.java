@@ -4,7 +4,6 @@ import ca.maickel.bpsback.domain.Photo;
 import ca.maickel.bpsback.dto.NewPhotoDTO;
 import ca.maickel.bpsback.dto.PhotoDTO;
 import ca.maickel.bpsback.services.PhotoService;
-import ca.maickel.bpsback.services.PhotoServiceImpl;
 import ca.maickel.bpsback.services.TagService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +23,7 @@ public class PhotoResource {
   private final PhotoService service;
   private final TagService tagService;
 
-  public PhotoResource(PhotoServiceImpl service, TagService tags) {
+  public PhotoResource(PhotoService service, TagService tags) {
     this.service = service;
     this.tagService = tags;
   }
@@ -83,7 +82,8 @@ public class PhotoResource {
   /** Only logged users may insert new photos */
   @PreAuthorize("hasAnyRole('REGULAR')")
   @RequestMapping(value = "/upload/{id}", method = RequestMethod.POST)
-  public ResponseEntity<Void> insertPhoto(@RequestParam(name="file") MultipartFile file, @PathVariable Integer id) {
+  public ResponseEntity<Void> insertPhoto(
+      @RequestParam(name = "file") MultipartFile file, @PathVariable Integer id) {
     URI uri = service.uploadPhoto(file, id);
     return ResponseEntity.created(uri).build();
   }

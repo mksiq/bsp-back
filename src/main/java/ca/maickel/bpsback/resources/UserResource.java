@@ -4,7 +4,7 @@ import ca.maickel.bpsback.domain.Photo;
 import ca.maickel.bpsback.domain.Transaction;
 import ca.maickel.bpsback.domain.User;
 import ca.maickel.bpsback.dto.UserDTO;
-import ca.maickel.bpsback.services.PhotoServiceImpl;
+import ca.maickel.bpsback.services.PhotoService;
 import ca.maickel.bpsback.services.TransactionService;
 import ca.maickel.bpsback.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -22,25 +22,25 @@ import java.util.stream.Collectors;
 public class UserResource {
 
   private final UserService service;
-  private final PhotoServiceImpl photoServiceImpl;
+  private final PhotoService photoService;
   private final TransactionService transactionService;
 
   public UserResource(
-          UserService service, PhotoServiceImpl photoServiceImpl, TransactionService transactionService) {
+          UserService service, PhotoService photoService, TransactionService transactionService) {
     this.service = service;
-    this.photoServiceImpl = photoServiceImpl;
+    this.photoService = photoService;
     this.transactionService = transactionService;
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   public ResponseEntity<?> find(@PathVariable Integer id) {
     User obj = service.find(id);
-    List<Photo> ownedPhotos = photoServiceImpl.findAllByUser(obj);
+    List<Photo> ownedPhotos = photoService.findAllByUser(obj);
     obj.setPhotos(ownedPhotos);
     List<Transaction> boughtTransactionsList = transactionService.findAllByBuyer(obj);
     List<Transaction> soldTransactionsList = transactionService.findAllBySeller(obj);
-    boughtTransactionsList.forEach(transaction -> transaction.setBuyer(null));
-    soldTransactionsList.forEach(transaction -> transaction.setBuyer(null));
+//    boughtTransactionsList.forEach(transaction -> transaction.setBuyer(null));
+//    soldTransactionsList.forEach(transaction -> transaction.setBuyer(null));
     obj.setBoughtTransactions(boughtTransactionsList);
     obj.setSoldTransactions(soldTransactionsList);
     return ResponseEntity.ok().body(obj);

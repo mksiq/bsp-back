@@ -3,8 +3,10 @@ package ca.maickel.bpsback.resources;
 import ca.maickel.bpsback.domain.Transaction;
 import ca.maickel.bpsback.dto.NewTransactionDTO;
 import ca.maickel.bpsback.dto.TransactionDTO;
+import ca.maickel.bpsback.services.PhotoService;
 import ca.maickel.bpsback.services.PhotoServiceImpl;
 import ca.maickel.bpsback.services.TransactionService;
+import ca.maickel.bpsback.services.TransactionServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +21,11 @@ import java.util.stream.Collectors;
 public class TransactionResource {
 
   private final TransactionService service;
-  private final PhotoServiceImpl photoServiceImpl;
+  private final PhotoService photoService;
 
-  public TransactionResource(TransactionService service, PhotoServiceImpl photoServiceImpl) {
+  public TransactionResource(TransactionServiceImpl service, PhotoServiceImpl photoService) {
     this.service = service;
-    this.photoServiceImpl = photoServiceImpl;
+    this.photoService = photoService;
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -44,12 +46,12 @@ public class TransactionResource {
   }
 
   /** Only logged users may post new transactions */
- // @PreAuthorize("hasAnyRole('REGULAR')")
+  // @PreAuthorize("hasAnyRole('REGULAR')")
   @RequestMapping(method = RequestMethod.POST)
   public ResponseEntity<Void> insert(@RequestBody NewTransactionDTO objDTO) {
-    objDTO.setPhoto(photoServiceImpl.find(objDTO.getPhoto().getId()));
+    objDTO.setPhoto(photoService.find(objDTO.getPhoto().getId()));
     // Buying a photo must increase its downloads number
-    photoServiceImpl.increaseDownloads(objDTO.getPhoto());
+    photoService.increaseDownloads(objDTO.getPhoto());
     Transaction obj = service.fromDTO(objDTO);
     obj = service.insert(obj);
     URI uri =

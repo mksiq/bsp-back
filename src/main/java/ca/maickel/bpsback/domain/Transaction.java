@@ -31,7 +31,6 @@ public class Transaction implements Serializable {
   @JoinColumn(name = "seller_id", columnDefinition = "integer")
   private User seller;
 
-  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "photo_id")
   private Photo photo;

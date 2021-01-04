@@ -82,7 +82,11 @@ public class UserServiceImpl implements UserService {
   public User insert(User obj) {
     obj.setId(null);
     obj = repo.save(obj);
-    emailService.sendSignupConfirmationEmail(obj);
+    /**
+     * Removed this for now as as Gmail keeps giving errors from time to time even after configuring
+     * External apps
+     */
+    // emailService.sendSignupConfirmationEmail(obj);
     return obj;
   }
 

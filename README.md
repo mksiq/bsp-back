@@ -12,11 +12,13 @@ Link for front-end project running:
 Link for this front-end project running:
 [Heroku](https://bps-backend.herokuapp.com/)
 
-As these projects are on free Dynos it may take a while to wake up the server.
+As these projects are on free Heroku Dynos, it may take a while to wake up the server.
 
 
 ## Entities:
  
+![Class Diagram](ClassDiagram.jpg)
+
 Photos, Tags, Users, and Transactions
 
 The concept is a photo marketplace that allow users to list their photos for other users to buy. Each transaction must be stored. To query and categorize Photos there are Tags. <del>New users and transactions are confirmed by e-mails.</del> Passwords are stored encoded by BCrypt.

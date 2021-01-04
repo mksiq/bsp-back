@@ -1,20 +1,27 @@
 #  Banana Photo Store
 
-Project in progress built using Java Spring. It intends to serve a photo marketplace that allows users to buy and sell pictures.
+Project in built using Java Spring. It intends to serve a photo marketplace that allows users to buy and sell pictures.
 For testing DB it is using HB2 database. 
 
 Link for front-end project repo:
 [BPS Front-end](https://github.com/mksiq/bps-front)
 
+Link for front-end project running:
+[Heroku](https://bps-frontend.herokuapp.com/)
 
-Entities:
+Link for this front-end project running:
+[Heroku](https://bps-backend.herokuapp.com/)
+
+As these projects are on free Dynos it may take a while to wake up the server.
+
+
+## Entities:
  
 Photos, Tags, Users, and Transactions
 
-The concept is a photo marketplace that allow users to list their photos for other users to buy. Each transaction must be stored. To query and categorize photos there are Tags. New users and transactions are confirmed by e-mails. Passwords are stored encoded by BCrypt.
+The concept is a photo marketplace that allow users to list their photos for other users to buy. Each transaction must be stored. To query and categorize Photos there are Tags. <del>New users and transactions are confirmed by e-mails.</del> Passwords are stored encoded by BCrypt.
 
 A user may delete itself, but their photos can't be deleted as it may have already been bought by another user.
-
 
 For the database, it uses for testing H2DB, MySQL in the production version.
 
@@ -25,39 +32,57 @@ Photos are stored on Amazon AWS S3. To save space and bandwidth the images are r
 Authentication is done with the use of Tokens Auth0 JWT.
 
 
-## Available end-points
+## Some available end-points for GET
 
-### /tags
-/tags  Returns all tags
-
->[{"id":1,"tag":"Banana"}
-> ,{"id":2,"tag":"Fruit"}]\
+## /tags
+***/tags*** 
+> Returns all tags.
 
 
-/tags/{id} Query a tag by Id, returns array of photos with user that uploaded that photo:
->{"id":1,"tag":"Banana","photos":[{"id":1,"fileName":"banana.jpg","width":800,"height":600,"price":5.99,"date":"2020-12-27","title":"Lonely Banana","downloads":4,"user":{"id":1,"userName":"msiqueira","email":"","password":"","signUpDate":"2020-12-27","soldList":[],"boughtList":[]}}]}
-
-/tags/tag={string} Query a tag by its name, returns array of photos. example: /tags=banana
->{"id":1,"tag":"Banana","photos":[{"id":1,"fileName":"banana.jpg","width":800,"height":600,"price":5.99,"date":"2020-12-27","title":"Lonely Banana","downloads":4,"user":{"id":1,"userName":"msiqueira","email":"","password":"","signUpDate":"2020-12-27","soldList":[],"boughtList":[]}}]}
+***/tags/{id}***
+> Query a tag by Id, returns array of photos with user that uploaded that photo.
 
 
-### /photos
-/photos  Returns all photos
-> [{"id":1,"fileName":"banana.jpg","width":800,"height":600,"price":5.99,"date":"2020-12-27","title":"Lonely Banana","downloads":4,"user":{"id":1,"userName":"msiqueira","email":"","password":"","signUpDate":"2020-12-27","soldList":[],"boughtList":[]},"tags":[{"id":1,"tag":"Banana"},{"id":2,"tag":"Fruit"}]}]
+***/tags/tag={string}***
+> Query a tag by its name, returns array of photos. example: /tags=banana. This is called multiple times for searching for multiple tags.
 
-/photos/{id} Query a photo by Id, returns array of tags, and the user that uploaded that photo:
-> {"id":1,"fileName":"banana.jpg","width":800,"height":600,"price":5.99,"date":"2020-12-27","title":"Lonely Banana","downloads":4,"user":{"id":1,"userName":"msiqueira","email":"","password":"","signUpDate":"2020-12-27","soldList":[],"boughtList":[]},"tags":[{"id":2,"tag":"Fruit"},{"id":1,"tag":"Banana"}]}
+Any user may insert tags. It is done when inserting a photo. If it does not exist it is created, if it already exists then that photo is linked to the existing tag. All tags are unique.
 
-### /transactions
-/transactions Returns all transactions
-> [{"id":1,"date":"2020-12-27","listPrice":5.99}]
+Only admins may delete or update tags.
 
-/transactions/{id} Query a transaction by Id.
-> [{"id":1,"date":"2020-12-27","listPrice":5.99}]
+## photos
+***/photos*** 
+> Returns all photos
 
-### /users
-/users Returns all users
-> [{"id":1,"userName":"msiqueira","email":"mcksiq@gmail.com","password":"mcksiq@gmail.com","signUpDate":"2020-12-27","soldList":[],"boughtList":[]},{"id":2,"userName":"someone","email":"s@gmail.com","password":"s@gmail.com","signUpDate":"2020-12-27","soldList":[],"boughtList":[]}]
+***/photos/{id}***
+> Query a photo by Id, contains an array of tags, and the user that uploaded that photo:
 
-/users/{id} Query by Id. Returns users with all uploaded photos, bought transactions, and sold transactions:
-> {"id":1,"userName":"msiqueira","email":"mcksiq@gmail.com","password":"","signUpDate":"2020-12-27","boughtTransactions":[],"soldTransactions":[{"id":1,"date":"2020-12-27","listPrice":5.99,"buyer":null}],"photos":[{"id":1,"fileName":"banana.jpg","width":800,"height":600,"price":5.99,"date":"2020-12-27","title":"Lonely Banana","downloads":4,"tags":[],"user":null}]}
+Only admins may delete photos as it is necessary to keep the picture for older transactions. Something that could do emulate that is a boolean isActive field, so the *deleted* photo  no longer appears in searches.
+
+Any logged user may insert photos. A logged user may update their photos information.
+
+## /transactions
+***/transactions***
+> Returns all transactions. Only available to Admins.
+
+/transactions/{id}
+> Query a transaction by Id. Only Only available to Admins. 
+
+Any logged user may Insert a transaction (buy a Photo). By doing so it inserts a sold transaction to the that Photo owner. To add a transaction all necessary is the photo id, since the photo holds the list price, the owner, and the server keeps track of who is the logged user that is buying it.  
+
+Users have both bought and sold transactions. When a logged user get their own User information both list of transactions come attached.
+
+Only Admins may delete transactions.
+
+## /users
+***/users***
+> Returns all users. Only available to admins. Does not bring password.
+
+***/users/{id}***
+> Query by Id. Returns users with all uploaded photos, bought transactions, and sold transactions. Only available to themselves and admin.
+
+***/users/email/value={string}***
+> Query by an email. It is used for logging in.
+
+Non logged users may sign up. Logged users may update their information. Logged user may delete himself.
+

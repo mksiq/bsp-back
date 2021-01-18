@@ -9,7 +9,7 @@ Link for front-end project repo:
 Link for front-end project running:
 [Heroku](https://bps-frontend.herokuapp.com/)
 
-Link for this front-end project running:
+Link for this back-end project running:
 [Heroku](https://bps-backend.herokuapp.com/)
 
 As these projects are on free Heroku Dynos, it may take a while to wake up the server.

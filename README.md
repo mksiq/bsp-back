@@ -1,6 +1,6 @@
 #  Banana Photo Store
 
-Project in built using Java Spring. It intends to serve a photo marketplace that allows users to buy and sell pictures.
+Project built using Java Spring. It intends to serve a photo marketplace that allows users to buy and sell pictures.
 For testing DB it is using HB2 database. 
 
 Link for front-end project repo:

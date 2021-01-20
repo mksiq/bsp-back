@@ -6,11 +6,11 @@ For testing DB it is using HB2 database.
 Link for front-end project repo:
 [BPS Front-end](https://github.com/mksiq/bps-front)
 
-Link for front-end project running:
-[Heroku](https://bps-frontend.herokuapp.com/)
-
 Link for this back-end project running:
 [Heroku](https://bps-backend.herokuapp.com/)
+
+Link for front-end project running (It is only accessed by the front-end interface, so not really useful to access using this link):
+[Heroku](https://bps-frontend.herokuapp.com/)
 
 As these projects are on free Heroku Dynos, it may take a while to wake up the server.
 
